@@ -15,6 +15,6 @@ pretty:
 	npx prettier --write ./src/assets/scss && npx prettier --write ./src/assets/scripts
 
 lint:
-	npx eslint --fix ./src
+	npx eslint --fix ./src/assets/scripts
 
 .PHONY: test

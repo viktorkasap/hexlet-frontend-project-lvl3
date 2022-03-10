@@ -5,7 +5,7 @@ module.exports = {
   devtool: "source-map",
   entry: './src/assets/scripts/index.js',
 	output: {
-		filename: 'index.js',
+		filename: 'assets/scripts/index.js',
 	},
 	devServer: {
 		port: 9000,
@@ -73,9 +73,11 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: 'src/index.html',
+			inject: 'body',
+			scriptLoading: 'defer' // 'blocking'|'defer'|'module'
 		}),
 		new MiniCssExtractPlugin({
-			filename: 'styles.css',
+			filename: 'assets/styles/styles.css',
 			chunkFilename: '[id].css',
 		}),
 	],

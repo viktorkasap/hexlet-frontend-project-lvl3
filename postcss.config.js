@@ -1,4 +1,3 @@
-const postcss = require('postcss');
 const postcssPresetEnv = require('postcss-preset-env');
 
 module.exports = {

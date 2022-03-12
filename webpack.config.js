@@ -1,21 +1,35 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const path = require('path');
+const mode = process.env.NODE_ENV;
+const isDevMode = mode === 'development';
 
 module.exports = {
-  devtool: "source-map",
-  entry: './src/assets/scripts/index.js',
+	mode: mode,
+	
+	devtool: 'source-map',
+	
+	entry: {
+		index: path.resolve(__dirname, './src/scripts/index.js'),
+	},
+	
 	output: {
-		filename: 'assets/scripts/index.js',
+		filename: `scripts/[name]${isDevMode ? '.[contenthash:6]' : ''}.js`,
+		clean: true,
 	},
+	
 	devServer: {
+		hot: true,
 		port: 9000,
-		watchFiles: ['src/**/*'],
+		static: './dist',
+		watchFiles: ['./src/**/*', './*.html'],
 	},
-	mode: process.env.NODE_ENV || 'development',
 	module: {
 		rules: [
+			// JS
 			{
-				test: /\.js$/,
+				test: /\.js$/i,
 				exclude: /node_modules/,
 				use: {
 					loader: 'babel-loader',
@@ -24,61 +38,54 @@ module.exports = {
 					},
 				},
 			},
+			// STYLES
 			{
-				test: /\.css$/,
-        use: [
-					process.env.NODE_ENV !== 'production'
-						? 'style-loader'
-						: MiniCssExtractPlugin.loader,
-	        {
-		        loader: "css-loader",
-		        options: {
-			        sourceMap: true,
-		        },
-	        },
-					'postcss-loader'
-        ],
-			},
-			{
-				test: /\.scss$/,
+				test: /\.(s[ac]|c)ss$/i,
 				use: [
-					process.env.NODE_ENV !== 'production'
-						? 'style-loader'
-						: MiniCssExtractPlugin.loader,
-          {
-            loader: "css-loader",
-            options: {
-              sourceMap: true,
-            },
-          },
-          {
-            loader: "sass-loader",
-            options: {
-              sourceMap: true,
-            },
-          },
+					{
+						loader: MiniCssExtractPlugin.loader,
+						options: {publicPath: "../"},
+					},
+					'css-loader',
 					'postcss-loader',
+					'sass-loader',
 				],
 			},
+			// IMAGES
 			{
-				test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				use: 'url-loader?limit=10000',
+				test: /\.(png|jpg|jpeg|gif|webp)$/i,
+				type: 'asset/resource',
+				generator: {
+					filename: `images/[name]${isDevMode ? '.[contenthash:6]' : ''}[ext]`
+				},
 			},
+			// SVG
 			{
-				test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/,
-				use: 'file-loader',
+				test: /\.svg$/i,
+				type: 'asset/resource',
+				generator: {
+					filename: `svg/[name]${isDevMode ? '.[contenthash:6]' : ''}[ext]`
+				},
 			},
+			// FONTS
+			{
+				test: /\.(woff(2)?|ttf|eot)$/i,
+				type: 'asset/resource',
+				generator: {
+					filename: `fonts/[name]${isDevMode ? '.[contenthash:6]' : ''}[ext]`
+				},
+			}
 		],
 	},
+	
 	plugins: [
-		new HtmlWebpackPlugin({
-			template: 'src/index.html',
-			inject: 'body',
-			scriptLoading: 'defer' // 'blocking'|'defer'|'module'
-		}),
 		new MiniCssExtractPlugin({
-			filename: 'assets/styles/styles.css',
-			chunkFilename: '[id].css',
+			filename: `styles/styles${isDevMode ? '.[contenthash:6]' : ''}.css`,
 		}),
+		new HtmlWebpackPlugin({
+			template: './index.html',
+			inject: 'body',
+		})
 	],
 };
+

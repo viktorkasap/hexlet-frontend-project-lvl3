@@ -1,5 +1,5 @@
 server:
-	npx webpack serve
+	NODE_ENV=development npx webpack serve
 
 install:
 	npm ci

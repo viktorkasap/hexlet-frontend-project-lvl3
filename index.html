@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>WEBPACK 5 - 1</title>
+        <link rel="prefetch" href="<%= htmlWebpackPlugin.files.css %>" as="style">
+        <link rel="preload" href="<%= htmlWebpackPlugin.files.css %>" as="style">
+</head>
+<body>
+
+<header><h1>Title</h1></header>
+<main>
+    <section>
+        <h2>Mai11n</h2>
+        <div class="block"></div>
+        <img src="<%= require('./src/images/image.jpeg') %>" alt="image2" width="100">
+        <img src="<%= require('./src/svg/enter.svg') %>" alt="image2" width="100">
+        <div class="block3">BLOCK13</div>
+        <div class="block2">
+            <h2>block2</h2>
+            <p>Lorem ipsum dolor sit amet.</p>
+            <strong>strong</strong>
+        </div>
+    </section>
+</main>
+<footer><h3>Footer</h3></footer>
+</body>
+</html>

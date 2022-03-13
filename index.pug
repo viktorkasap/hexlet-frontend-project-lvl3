@@ -3,22 +3,11 @@ include src/pug/libs/_libs
 doctype html
 html(lang='en')
 
-    include src/pug/_head
+	include src/pug/layouts/_head
 
-    body
-        header
-            h1 Title
-        main
-            section
-                h2 Mai11n
-                .block
-                +jpeg('image')
-                +svg('enter')
-                .block3 BLOCK13
-                .block2
-                    h2 block2
-                    p Lorem ipsum dolor sit amet.
-                    strong strong
-                    p   Lorem 22
+	body(class="d-flex flex-column min-vh-100")
+		include src/pug/layouts/_header
 
-        include src/pug/_footer
+		include src/pug/content/_index
+
+		include src/pug/layouts/_footer

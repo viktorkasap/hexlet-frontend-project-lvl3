@@ -12,9 +12,9 @@ test:
 	npm test
 
 pretty:
-	npx prettier --write ./src/assets/scss && npx prettier --write ./src/assets/scripts
+	npx prettier --write ./src/scss && npx prettier --write ./src/scripts
 
 lint:
-	npx eslint --fix ./src/assets/scripts
+	npx eslint --fix ./src/scripts
 
 .PHONY: test

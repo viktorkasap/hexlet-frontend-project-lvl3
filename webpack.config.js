@@ -23,7 +23,7 @@ module.exports = {
 		hot: true,
 		port: 9000,
 		static: './dist',
-		watchFiles: ['./src/**/*', './*.html'],
+		watchFiles: ['./src/**/*', './*.html', './*.pug',],
 	},
 	module: {
 		rules: [
@@ -44,7 +44,7 @@ module.exports = {
 				use: [
 					{
 						loader: MiniCssExtractPlugin.loader,
-						options: {publicPath: "../"},
+						options: {publicPath: '../'},
 					},
 					'css-loader',
 					'postcss-loader',
@@ -56,7 +56,7 @@ module.exports = {
 				test: /\.(png|jpg|jpeg|gif|webp)$/i,
 				type: 'asset/resource',
 				generator: {
-					filename: `images/[name]${isDevMode ? '.[contenthash:6]' : ''}[ext]`
+					filename: `images/[name]${isDevMode ? '.[contenthash:6]' : ''}[ext]`,
 				},
 			},
 			// SVG
@@ -64,7 +64,7 @@ module.exports = {
 				test: /\.svg$/i,
 				type: 'asset/resource',
 				generator: {
-					filename: `svg/[name]${isDevMode ? '.[contenthash:6]' : ''}[ext]`
+					filename: `svg/[name]${isDevMode ? '.[contenthash:6]' : ''}[ext]`,
 				},
 			},
 			// FONTS
@@ -72,9 +72,15 @@ module.exports = {
 				test: /\.(woff(2)?|ttf|eot)$/i,
 				type: 'asset/resource',
 				generator: {
-					filename: `fonts/[name]${isDevMode ? '.[contenthash:6]' : ''}[ext]`
+					filename: `fonts/[name]${isDevMode ? '.[contenthash:6]' : ''}[ext]`,
 				},
-			}
+			},
+			//PUG
+			{
+				test: /\.pug$/i,
+				loader: 'pug-loader',
+				exclude: /(node_modules|bower_components)/
+			},
 		],
 	},
 	
@@ -83,7 +89,8 @@ module.exports = {
 			filename: `styles/styles${isDevMode ? '.[contenthash:6]' : ''}.css`,
 		}),
 		new HtmlWebpackPlugin({
-			template: './index.html',
+			// template: './index.html',
+			template: './index.pug',
 			inject: 'body',
 		})
 	],

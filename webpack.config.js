@@ -89,7 +89,7 @@ module.exports = {
 			filename: `styles/styles${isDevMode ? '.[contenthash:6]' : ''}.css`,
 		}),
 		new HtmlWebpackPlugin({
-			// template: './index.html',
+			favicon: "./src/images/256x256.png",
 			template: './index.pug',
 			inject: 'body',
 		})

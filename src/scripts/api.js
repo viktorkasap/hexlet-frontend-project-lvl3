@@ -1,5 +1,4 @@
 import axios from 'axios';
-import render from './render';
 
 const errorMessages = {
   network: {
@@ -20,7 +19,6 @@ export default (watchedState, url) => {
       })
       .then((data) => {
         state.content = [...state.content, data];
-        render(data);
         console.log('AXIOS DONE --->', data);
       });
   } catch (err) {

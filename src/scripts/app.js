@@ -6,10 +6,13 @@ import api from './api';
 import render from './render';
 
 const schema = yup.object().shape({
-  url: yup.string().url('Некорректный адрес URL').required('Не должно быть пустым'),
+  url: yup.string()
+    .url('Некорректный адрес URL')
+    // .notOneOf(urls)
+    .required('Не должно быть пустым'),
 });
 
-const validate = (fields) => schema
+const validate = (fields) => schema // const validate = (fields, urls) => schema
   .validate(fields, { abortEarly: false })
   .then(() => ({}))
   .catch((err) => keyBy(err.inner, 'path'));
@@ -48,7 +51,7 @@ export default () => {
 
     // FILL FIELDS VALUES OF STATE
     Object.entries(elements.fields).forEach(([name, element]) => {
-      const value = element().value.trim();
+      const value = element().value.trim(); // TODO заменить на FORMDATA
       watchedState.form.fields[name] = value;
     });
 
@@ -60,6 +63,10 @@ export default () => {
 
       // AXIOS GET DATA OF LINK
       if (watchedState.form.valid) {
+        // TODO #1 вытащить из апи изменения стейтов
+        // TODO #2 сделать список урлов
+        // TODO #3 валидаця на наличие ура в списке урлов
+        
         api(watchedState, watchedState.form.fields.url);
       }
     });

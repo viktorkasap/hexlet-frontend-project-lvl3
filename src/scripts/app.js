@@ -12,6 +12,8 @@ export default () => {
     },
     submit: document.getElementById('submit'),
     message: document.querySelector('.text-danger'),
+    posts: document.querySelector('.posts'),
+    feeds: document.querySelector('.feeds')
   };
 
   const state = {
@@ -27,7 +29,10 @@ export default () => {
       },
     },
     urls: [],
-    content: [],
+    content: {
+      feeds: {},
+      posts: {},
+    }
   };
 
   const i18nInstance = i18n.createInstance();

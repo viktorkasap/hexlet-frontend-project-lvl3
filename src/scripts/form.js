@@ -1,5 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import validate from './validate';
+import parse from './parse';
 import api from './api';
 
 export default (e, form, elements, watchedState, i18nInstance) => {
@@ -28,27 +29,34 @@ export default (e, form, elements, watchedState, i18nInstance) => {
       // AXIOS GET DATA OF LINK
       if (state.form.valid) {
         const { url } = state.form.fields;
-        state.form.process.status = null;
 
         api(url)
           .then((response) => {
-            console.log('\nsending url');
             state.form.process.status = 'sending';
             return response.data;
           })
-          .then((data) => {
-            state.content = [...state.content, data];
-            state.urls = [...state.urls, url];
-            state.form.process.status = 'sent';
-            state.form.process.info = i18nInstance.t('network.success.rss');
+          .then((content) => {
+            const rssContent = parse(state, content);
+            
+            if (!rssContent) {
+              state.form.process.info = i18nInstance.t('errors.rss');
+              state.form.process.status = 'error';
+            }
+            
+            if (rssContent) {
+              state.urls = [...state.urls, url];
+              state.form.process.status = 'sent';
+              state.form.process.info = i18nInstance.t('network.success.rss');
+            }
           })
           .catch((err) => {
             if (err.request) {
               state.form.process.info = i18nInstance.t('network.error.request');
             } else {
-              state.form.process.info = i18nInstance('network.error.default');
+              state.form.process.info = i18nInstance.t('network.error.default');
             }
             state.form.process.status = 'error';
+            throw err;
           });
       }
     });

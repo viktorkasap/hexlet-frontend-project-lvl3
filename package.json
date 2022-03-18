@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "axios": "^0.26.1",
+    "i18next": "^21.6.14",
     "lodash": "^4.17.21",
     "npm-check-updates": "^11.8.5",
     "on-change": "^4.0.0",

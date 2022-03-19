@@ -15,5 +15,14 @@ export default {
         rss: 'RSS успешно загружен',
       },
     },
+    ui: {
+      feeds: {
+        title: 'Фиды'
+      },
+      posts: {
+        title: 'Посты',
+        button: 'Просмотр'
+      }
+    }
   },
 };

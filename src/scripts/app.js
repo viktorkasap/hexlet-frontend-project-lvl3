@@ -29,35 +29,7 @@ export default () => {
       },
     },
     urls: [],
-    feeds: [
-      {
-        title: 'Deutsche Welle: DW.COM News',
-        description: 'News',
-        posts: [
-          { title: 'post3', description: 'content post3', link: 'link post3' },
-          { title: 'post4', description: 'content post4', link: 'link post4' },
-          { title: 'post5', description: 'content post4', link: 'link post5' },
-        ],
-      },
-      {
-        title: 'Deutsche Welle: DW.COM News2',
-        description: 'News',
-        posts: [
-          { title: 'post3', description: 'content post3', link: 'link post3' },
-          { title: 'post4', description: 'content post4', link: 'link post4' },
-          { title: 'post5', description: 'content post4', link: 'link post5' },
-        ],
-      },
-      {
-        title: 'Deutsche Welle: DW.COM News',
-        description: 'News',
-        posts: [
-          { title: 'post6', description: 'content post3', link: 'link post3' },
-          { title: 'post7', description: 'content post4', link: 'link post4' },
-          { title: 'post8', description: 'content post4', link: 'link post5' },
-        ],
-      },
-    ],
+    feeds: [],
   };
 
   const i18nInstance = i18n.createInstance();

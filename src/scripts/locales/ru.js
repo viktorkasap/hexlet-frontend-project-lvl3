@@ -1,7 +1,7 @@
 export default {
   translation: {
     errors: {
-      url: 'Некорректный адрес URL',
+      url: 'Некорректный URL адрес',
       notOneOf: 'URL уже существует',
       required: 'Поле не должно быть пустым',
       rss: 'Ресурс не содержит валидный RSS'

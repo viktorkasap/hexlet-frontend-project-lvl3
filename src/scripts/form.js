@@ -7,31 +7,29 @@ import api from './api';
 const toFillingStateFeeds = (watchState, newFeed) => {
   const state = watchState;
   const feeds = [...state.feeds];
-  
-  // console.log('feeds', feeds);
-  // console.log('newFeed', newFeed)
-  //
-  // let merged = uniqWith([...feeds, newFeed], (pre, cur) => {
-  //   if (pre.title === cur.title) {
-  //     cur.description = pre.description;
-  //     cur.posts = pre.posts;
-  //     return true;
-  //   }
-  //   return false;
-  // });
-  //
-  // console.log('merged --->', merged);
 
-  const newFeeds = feeds.reduce((prev, curr) => {
-    if (curr.title === newFeed.title) {
-      const { description, posts } = newFeed;
-      return [...prev, { title: curr.title, description, posts }];
+  const merged = uniqWith([...feeds, newFeed], (pre, cur) => {
+    if (pre.title !== cur.title) {
+      const current = cur;
+      current.description = pre.description;
+      current.posts = pre.posts;
+      return true;
     }
+    return false;
+  });
 
-    return [...prev, curr, newFeed];
-  }, []);
+  console.log('merged --->', merged);
 
-  state.feeds = newFeeds;
+  // const newFeeds = feeds.reduce((prev, curr) => {
+  //   if (curr.title === newFeed.title) {
+  //     const { description, posts } = newFeed;
+  //     return [...prev, { title: curr.title, description, posts }];
+  //   }
+  //
+  //   return [...prev, curr, newFeed];
+  // }, []);
+
+  state.feeds = merged;
 };
 
 export default (e, form, elements, watchedState, i18nInstance) => {

@@ -4,7 +4,7 @@ export default {
       url: 'Некорректный URL адрес',
       notOneOf: 'URL уже существует',
       required: 'Поле не должно быть пустым',
-      rss: 'Ресурс не содержит валидный RSS'
+      rss: 'Ресурс не содержит валидный RSS',
     },
     network: {
       error: {

@@ -4,35 +4,35 @@ import validate from './validate';
 import parse from './parse';
 import api from './api';
 
-const toFillingStateFeeds = (state, newFeed) => {
-  console.log(newFeed)
+const toFillingStateFeeds = (watchState, newFeed) => {
+  const state = watchState;
   const feeds = [...state.feeds];
   
+  // console.log('feeds', feeds);
+  // console.log('newFeed', newFeed)
+  //
+  // let merged = uniqWith([...feeds, newFeed], (pre, cur) => {
+  //   if (pre.title === cur.title) {
+  //     cur.description = pre.description;
+  //     cur.posts = pre.posts;
+  //     return true;
+  //   }
+  //   return false;
+  // });
+  //
+  // console.log('merged --->', merged);
+
   const newFeeds = feeds.reduce((prev, curr) => {
-    
-    if (curr.title !== newFeed.title) {
-      
-      const mergedPosts = uniqWith([...curr.posts, ...newFeed.posts], (preview, current) => {
-        if (preview.title === current.title) {
-          current.description = preview.description;
-          current.lik = preview.lik
-          return true;
-        }
-        return false;
-      });
-      
-      curr.posts = mergedPosts;
-      
-      return [...prev, curr];
+    if (curr.title === newFeed.title) {
+      const { description, posts } = newFeed;
+      return [...prev, { title: curr.title, description, posts }];
     }
-    
+
     return [...prev, curr, newFeed];
   }, []);
 
-  console.log('newFeeds', newFeeds);
-  
   state.feeds = newFeeds;
-}
+};
 
 export default (e, form, elements, watchedState, i18nInstance) => {
   e.preventDefault();
@@ -68,12 +68,12 @@ export default (e, form, elements, watchedState, i18nInstance) => {
           })
           .then((content) => {
             const rssContent = parse(content);
-           
+
             if (!rssContent) {
               state.form.process.info = i18nInstance.t('errors.rss');
               state.form.process.status = 'error';
             }
-            
+
             if (rssContent) {
               toFillingStateFeeds(state, rssContent);
               console.log('STATE', state.feeds);

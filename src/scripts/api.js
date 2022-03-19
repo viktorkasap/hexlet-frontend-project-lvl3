@@ -10,5 +10,5 @@ const buildUrl = (url) => {
 
   return newUrl.href;
 };
-// https://allorigins.hexlet.app/get?disableCache=true&url=https%3A%2F%2Fru.hexlet.io%2Flessons.rss
+
 export default (url) => axios.get(buildUrl(url));

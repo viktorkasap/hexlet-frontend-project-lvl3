@@ -1,6 +1,4 @@
 const feeds = (document) => {
-  console.log('document--->', document);
-
   const titleEl = document.querySelector('title');
   const title = titleEl.textContent;
 

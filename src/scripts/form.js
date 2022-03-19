@@ -6,30 +6,19 @@ import api from './api';
 
 const toFillingStateFeeds = (watchState, newFeed) => {
   const state = watchState;
-  const feeds = [...state.feeds];
-
-  const merged = uniqWith([...feeds, newFeed], (pre, cur) => {
-    if (pre.title !== cur.title) {
-      const current = cur;
-      current.description = pre.description;
-      current.posts = pre.posts;
+  const feeds = [...state.feeds, newFeed];
+  const mergedFeeds = uniqWith(feeds, (prev, curr) => {
+    if (prev.title === curr.title) {
+      const current = curr;
+      current.description = prev.description;
+      current.posts = prev.posts;
       return true;
     }
     return false;
   });
 
-  console.log('merged --->', merged);
-
-  // const newFeeds = feeds.reduce((prev, curr) => {
-  //   if (curr.title === newFeed.title) {
-  //     const { description, posts } = newFeed;
-  //     return [...prev, { title: curr.title, description, posts }];
-  //   }
-  //
-  //   return [...prev, curr, newFeed];
-  // }, []);
-
-  state.feeds = merged;
+  state.feeds = mergedFeeds;
+  return true;
 };
 
 export default (e, form, elements, watchedState, i18nInstance) => {
@@ -44,8 +33,8 @@ export default (e, form, elements, watchedState, i18nInstance) => {
   });
 
   // ERRORS
-  const errors = validate(state.form.fields, state.urls, i18nInstance);
-  errors
+  const process = validate(state.form.fields, state.urls, i18nInstance);
+  process
     .then((data) => {
       state.form.process.info = data;
       state.form.valid = isEmpty(data);
@@ -62,7 +51,7 @@ export default (e, form, elements, watchedState, i18nInstance) => {
         api(url)
           .then((response) => {
             state.form.process.status = 'sending';
-            return response.data;
+            return response.data.contents;
           })
           .then((content) => {
             const rssContent = parse(content);
@@ -74,7 +63,6 @@ export default (e, form, elements, watchedState, i18nInstance) => {
 
             if (rssContent) {
               toFillingStateFeeds(state, rssContent);
-              console.log('STATE', state.feeds);
               state.urls = [...state.urls, url];
               state.form.process.status = 'sent';
               state.form.process.info = i18nInstance.t('network.success.rss');
@@ -92,5 +80,5 @@ export default (e, form, elements, watchedState, i18nInstance) => {
       }
     });
 
-  console.log(state);
+  console.log('state', state);
 };

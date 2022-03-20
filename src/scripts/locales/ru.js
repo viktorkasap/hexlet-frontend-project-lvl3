@@ -17,12 +17,12 @@ export default {
     },
     ui: {
       feeds: {
-        title: 'Фиды'
+        title: 'Фиды',
       },
       posts: {
         title: 'Посты',
-        button: 'Просмотр'
-      }
-    }
+        button: 'Просмотр',
+      },
+    },
   },
 };

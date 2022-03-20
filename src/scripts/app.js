@@ -2,7 +2,7 @@ import onChange from 'on-change';
 import i18n from 'i18next';
 import render from './render';
 import formHandler from './form';
-import postsHandler from  './posts';
+import postsHandler from './posts';
 import resources from './locales/index';
 
 export default () => {
@@ -21,7 +21,7 @@ export default () => {
       link: document.querySelector('.full-article'),
     },
   };
-  
+
   const state = {
     lng: 'ru',
     form: {
@@ -40,8 +40,8 @@ export default () => {
       viewedPostsIds: [],
       modal: {
         renderId: null,
-      }
-    }
+      },
+    },
   };
 
   const i18nInstance = i18n.createInstance();
@@ -51,7 +51,7 @@ export default () => {
     resources,
   });
 
-  const { form:formEl, posts:postsEl } = elements;
+  const { form: formEl, posts: postsEl } = elements;
   const watchedState = onChange(state, render(state, elements, i18nInstance));
 
   formEl.addEventListener('submit', (e) => formHandler(e, formEl, elements, watchedState, i18nInstance));

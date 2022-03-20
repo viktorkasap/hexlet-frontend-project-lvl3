@@ -37,15 +37,19 @@ const handleProcessState = (elements, status) => {
 	}
 };
 
-const renderFeeds = (feeds, elements, i18nInstance) => {
+const renderFeeds = (state, elements, i18nInstance, toRerend) => {
+	const {feeds} = state;
 	const {feeds: feedsWrap, posts: postsWrap} = elements;
- 
-	feedsWrap.innerHTML = '';
-	feedsWrap.insertAdjacentHTML('afterbegin', templateFeed(feeds, i18nInstance));
+	
+	console.log('toRerend', toRerend)
+	
+	if (!toRerend) {
+		feedsWrap.innerHTML = '';
+		feedsWrap.insertAdjacentHTML('afterbegin', templateFeed(feeds, i18nInstance));
+	}
 	
 	postsWrap.innerHTML = '';
-	postsWrap.insertAdjacentHTML('afterbegin', templatePosts(feeds, i18nInstance));
-	// postsWrap.insertAdjacentElement('afterbegin', templatePosts(feeds, i18nInstance));
+	postsWrap.insertAdjacentHTML('afterbegin', templatePosts(state, i18nInstance));
 };
 
 const rendeStatus = (elements, status, info) => {
@@ -69,17 +73,22 @@ const rendeStatus = (elements, status, info) => {
 };
 
 export default (state, elements, i18nInstance) => (path, value, prevValue) => {
+	console.log('PATH --->', path);
+	console.log('VALUE --->', value);
+	
 	const {status, info} = state.form.process;
 	if ((path === 'form.process.status' || path === 'form.process.info') && status !== 'sending') {
 		rendeStatus(elements, status, info);
 	}
 	
-	if (value === 'error' || value === 'sending') {
+	if (value === 'error' || value === 'sending' || value === 'sent') {
 		handleProcessState(elements, value);
 	}
 	
-	if (value === 'sent') {
-		renderFeeds(state.feeds, elements, i18nInstance);
-		handleProcessState(elements, value);
+	if (value === 'sent' || path === 'ui.viewedPostsIds') {
+		const toRerend = path === 'ui.viewedPostsIds';
+		renderFeeds(state, elements, i18nInstance, toRerend);
 	}
+	
+
 };

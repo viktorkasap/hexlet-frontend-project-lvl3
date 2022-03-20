@@ -2,6 +2,7 @@ import onChange from 'on-change';
 import i18n from 'i18next';
 import render from './render';
 import formHandler from './form';
+import postsHandler from  './posts';
 import resources from './locales/index';
 
 export default () => {
@@ -15,7 +16,7 @@ export default () => {
     posts: document.querySelector('.posts'),
     feeds: document.querySelector('.feeds'),
   };
-
+  
   const state = {
     lng: 'ru',
     form: {
@@ -30,7 +31,10 @@ export default () => {
     },
     urls: [],
     feeds: [],
-    viewed: []
+    ui: {
+      viewedPostsIds: [],
+    }
+    
   };
 
   const i18nInstance = i18n.createInstance();
@@ -40,8 +44,9 @@ export default () => {
     resources,
   });
 
-  const { form } = elements;
+  const { form:formEl, posts:postsEl } = elements;
   const watchedState = onChange(state, render(state, elements, i18nInstance));
 
-  form.addEventListener('submit', (e) => formHandler(e, form, elements, watchedState, i18nInstance));
+  formEl.addEventListener('submit', (e) => formHandler(e, formEl, elements, watchedState, i18nInstance));
+  postsEl.addEventListener('click', (e) => postsHandler(e, elements, watchedState));
 };

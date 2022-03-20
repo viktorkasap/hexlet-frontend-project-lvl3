@@ -44,7 +44,8 @@ const renderFeeds = (feeds, elements, i18nInstance) => {
 	feedsWrap.insertAdjacentHTML('afterbegin', templateFeed(feeds, i18nInstance));
 	
 	postsWrap.innerHTML = '';
-	postsWrap.insertAdjacentElement('afterbegin', templatePosts(feeds, i18nInstance));
+	postsWrap.insertAdjacentHTML('afterbegin', templatePosts(feeds, i18nInstance));
+	// postsWrap.insertAdjacentElement('afterbegin', templatePosts(feeds, i18nInstance));
 };
 
 const rendeStatus = (elements, status, info) => {

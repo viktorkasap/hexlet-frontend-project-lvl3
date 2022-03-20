@@ -1,4 +1,4 @@
-const feeds = (document) => {
+const parseFeeds = (document) => {
   const titleEl = document.querySelector('title');
   const title = titleEl.textContent;
 
@@ -27,5 +27,5 @@ export default (content) => {
   const document = parser.parseFromString(content, 'application/xml');
   const hasError = document.querySelector('parsererror');
 
-  return hasError ? false : feeds(document);
+  return hasError ? false : parseFeeds(document);
 };

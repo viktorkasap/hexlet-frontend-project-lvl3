@@ -30,6 +30,7 @@ export default () => {
     },
     urls: [],
     feeds: [],
+    viewed: []
   };
 
   const i18nInstance = i18n.createInstance();

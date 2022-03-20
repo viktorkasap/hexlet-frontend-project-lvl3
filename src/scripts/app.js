@@ -15,6 +15,11 @@ export default () => {
     message: document.querySelector('.text-danger'),
     posts: document.querySelector('.posts'),
     feeds: document.querySelector('.feeds'),
+    modal: {
+      title: document.querySelector('.modal-title'),
+      body: document.querySelector('.modal-body'),
+      link: document.querySelector('.full-article'),
+    },
   };
   
   const state = {
@@ -33,8 +38,10 @@ export default () => {
     feeds: [],
     ui: {
       viewedPostsIds: [],
+      modal: {
+        renderId: null,
+      }
     }
-    
   };
 
   const i18nInstance = i18n.createInstance();

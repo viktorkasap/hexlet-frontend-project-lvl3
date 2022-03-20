@@ -37,6 +37,24 @@ const handleProcessState = (elements, status) => {
 	}
 };
 
+const renderPostToModal = (elements, watchedState, id) => {
+	const state = watchedState;
+	state.ui.modal.renderId = null;
+	
+	const {feeds} = state;
+	const [feedId, postId] = id.split('-');
+	const {title:postTitle, description:postDescription, link:postLink} = feeds[feedId].posts[postId];
+	const {title: modalTitle, body: modalBody, link: modalLink} = elements.modal;
+	
+	modalTitle.innerHTML = '';
+	modalTitle.textContent = postTitle;
+	
+	modalBody.innerHTML = '';
+	modalBody.textContent = postDescription;
+	
+	modalLink.href = postLink;
+};
+
 const renderFeeds = (state, elements, i18nInstance, toRerend) => {
 	const {feeds} = state;
 	const {feeds: feedsWrap, posts: postsWrap} = elements;
@@ -84,5 +102,9 @@ export default (state, elements, i18nInstance) => (path, value, prevValue) => {
 	if (value === 'sent' || path === 'ui.viewedPostsIds') {
 		const toRerend = path === 'ui.viewedPostsIds';
 		renderFeeds(state, elements, i18nInstance, toRerend);
+	}
+	
+	if (path === 'ui.modal.renderId' && value) {
+		renderPostToModal(elements, state, value);
 	}
 };

@@ -4,26 +4,26 @@ const cls = {
 };
 
 const items = (state, i18nInstance) => {
-	const isExistId = (collection, id) => collection.includes(id);
 	const {feeds} = state;
 	const {viewedPostsIds} = state.ui
 	
 	return feeds.map((item, index) => {
 		return item.posts.map((post, idx) => {
-			const hasViewed = isExistId(viewedPostsIds, `${index}-${idx}`);
-			const clsLink = cls[hasViewed ? 'visited' : 'novisited'];
+			const id = `${index}-${idx}`;
+			const hasViewedId = viewedPostsIds.includes(id);
+			const clsLink = cls[hasViewedId ? 'visited' : 'novisited'];
 
 			return `
 				<li class="list-group-item d-flex justify-content-between align-items-start border-0 border-end-0">
 					<a href="${post.link}"
 					   class="${clsLink}"
-					   data-post-id="${index}-${idx}"
+					   data-post-id="${id}"
 					   target="_blank"
 					   rel="noopener noreferrer">${post.title}
 					</a>
 					<button type="button"
 					        class="btn btn-outline-primary btn-sm"
-					        data-post-id="${index}-${idx}"
+					        data-post-id="${id}"
 					        data-bs-toggle="modal"
 					        data-bs-target="#modal">${i18nInstance.t('ui.posts.button')}</button>
 				</li>

@@ -41,8 +41,6 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
 	const {feeds} = state;
 	const {feeds: feedsWrap, posts: postsWrap} = elements;
 	
-	console.log('toRerend', toRerend)
-	
 	if (!toRerend) {
 		feedsWrap.innerHTML = '';
 		feedsWrap.insertAdjacentHTML('afterbegin', templateFeed(feeds, i18nInstance));
@@ -73,10 +71,8 @@ const rendeStatus = (elements, status, info) => {
 };
 
 export default (state, elements, i18nInstance) => (path, value, prevValue) => {
-	console.log('PATH --->', path);
-	console.log('VALUE --->', value);
-	
 	const {status, info} = state.form.process;
+	
 	if ((path === 'form.process.status' || path === 'form.process.info') && status !== 'sending') {
 		rendeStatus(elements, status, info);
 	}
@@ -89,6 +85,4 @@ export default (state, elements, i18nInstance) => (path, value, prevValue) => {
 		const toRerend = path === 'ui.viewedPostsIds';
 		renderFeeds(state, elements, i18nInstance, toRerend);
 	}
-	
-
 };

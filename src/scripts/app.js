@@ -1,8 +1,10 @@
 import onChange from 'on-change';
 import i18n from 'i18next';
-import render from './render';
-import formHandler from './form';
+import render from './view/render';
+import formHandler from './controllers/form';
+import postsHandler from './controllers/posts';
 import resources from './locales/index';
+import updateRss from './api/updateRss';
 
 export default () => {
   const elements = {
@@ -14,6 +16,11 @@ export default () => {
     message: document.querySelector('.text-danger'),
     posts: document.querySelector('.posts'),
     feeds: document.querySelector('.feeds'),
+    modal: {
+      title: document.querySelector('.modal-title'),
+      body: document.querySelector('.modal-body'),
+      link: document.querySelector('.full-article'),
+    },
   };
 
   const state = {
@@ -29,35 +36,16 @@ export default () => {
       },
     },
     urls: [],
-    feeds: [
-      {
-        title: 'Deutsche Welle: DW.COM News',
-        description: 'News',
-        posts: [
-          { title: 'post3', description: 'content post3', link: 'link post3' },
-          { title: 'post4', description: 'content post4', link: 'link post4' },
-          { title: 'post5', description: 'content post4', link: 'link post5' },
-        ],
+    feeds: [],
+    ui: {
+      viewedPostsIds: [],
+      modal: {
+        renderId: null,
       },
-      {
-        title: 'Deutsche Welle: DW.COM News2',
-        description: 'News',
-        posts: [
-          { title: 'post3', description: 'content post3', link: 'link post3' },
-          { title: 'post4', description: 'content post4', link: 'link post4' },
-          { title: 'post5', description: 'content post4', link: 'link post5' },
-        ],
-      },
-      {
-        title: 'Deutsche Welle: DW.COM News',
-        description: 'News',
-        posts: [
-          { title: 'post6', description: 'content post3', link: 'link post3' },
-          { title: 'post7', description: 'content post4', link: 'link post4' },
-          { title: 'post8', description: 'content post4', link: 'link post5' },
-        ],
-      },
-    ],
+    },
+    update: {
+      interval: 5000,
+    },
   };
 
   const i18nInstance = i18n.createInstance();
@@ -67,8 +55,11 @@ export default () => {
     resources,
   });
 
-  const { form } = elements;
+  const { form: formEl, posts: postsEl } = elements;
   const watchedState = onChange(state, render(state, elements, i18nInstance));
 
-  form.addEventListener('submit', (e) => formHandler(e, form, elements, watchedState, i18nInstance));
+  formEl.addEventListener('submit', (e) => formHandler(e, formEl, elements, watchedState, i18nInstance));
+  postsEl.addEventListener('click', (e) => postsHandler(e, elements, watchedState));
+
+  setTimeout(() => updateRss(watchedState, i18nInstance), state.update.interval);
 };

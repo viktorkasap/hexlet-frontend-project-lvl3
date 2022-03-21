@@ -1,6 +1,8 @@
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import isObject from 'lodash/isObject';
+import templateFeed from '../templates/feeds';
+import templatePosts from '../templates/posts';
 
 const cls = {
   sent: {
@@ -35,10 +37,38 @@ const handleProcessState = (elements, status) => {
   }
 };
 
-const renderFeeds = (state, elements, i18nInstance) => {
-  const { temp: rssDom } = state.content;
-  console.log('STATE --->', state);
-  console.log('rssDom --->', rssDom);
+const renderPostToModal = (elements, watchedState, id) => {
+  const state = watchedState;
+
+  const { feeds } = state;
+  const [feedId, postId] = id.split('-');
+  const {
+    title: postTitle,
+    description: postDescription,
+    link: postLink,
+  } = feeds[feedId].posts[postId];
+  const { title: modalTitle, body: modalBody, link: modalLink } = elements.modal;
+
+  modalTitle.innerHTML = '';
+  modalTitle.textContent = postTitle;
+
+  modalBody.innerHTML = '';
+  modalBody.textContent = postDescription;
+
+  modalLink.href = postLink;
+};
+
+const renderFeeds = (state, elements, i18nInstance, toRerend) => {
+  const { feeds } = state;
+  const { feeds: feedsWrap, posts: postsWrap } = elements;
+
+  if (!toRerend) {
+    feedsWrap.innerHTML = '';
+    feedsWrap.insertAdjacentHTML('afterbegin', templateFeed(feeds, i18nInstance));
+  }
+
+  postsWrap.innerHTML = '';
+  postsWrap.insertAdjacentHTML('afterbegin', templatePosts(state, i18nInstance));
 };
 
 const rendeStatus = (elements, status, info) => {
@@ -61,8 +91,10 @@ const rendeStatus = (elements, status, info) => {
   inputUrl.classList.add(cls[status].url);
 };
 
-export default (state, elements, i18nInstance) => (path, value, prevValue) => {
+export default (watchedState, elements, i18nInstance) => (path, value, prevValue) => {
+  const state = watchedState;
   const { status, info } = state.form.process;
+
   if ((path === 'form.process.status' || path === 'form.process.info') && status !== 'sending') {
     rendeStatus(elements, status, info);
   }
@@ -71,7 +103,13 @@ export default (state, elements, i18nInstance) => (path, value, prevValue) => {
     handleProcessState(elements, value);
   }
 
-  if (value === 'sent') {
-    // renderFeeds(state, elements, i18nInstance);
+  if (value === 'sent' || path === 'ui.viewedPostsIds') {
+    const toRerend = path === 'ui.viewedPostsIds';
+    renderFeeds(state, elements, i18nInstance, toRerend);
+  }
+
+  if (path === 'ui.modal.renderId' && value) {
+    renderPostToModal(elements, state, value);
+    state.ui.modal.renderId = null;
   }
 };

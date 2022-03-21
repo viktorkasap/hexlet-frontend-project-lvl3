@@ -16,8 +16,8 @@
   "scripts": {
     "server": "NODE_ENV=development webpack serve",
     "build": "NODE_ENV=production webpack",
-    "build2": "NODE_ENV=development webpack",
-    "test": "jest --colors"
+    "develop": "NODE_ENV=development webpack",
+    "test": "@hexlet/code"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.2",
@@ -29,8 +29,6 @@
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-jest": "^24.4.0",
     "html-webpack-plugin": "^5.5.0",
-    "jest": "^27.1.1",
-    "jest-cli": "^27.1.1",
     "mini-css-extract-plugin": "^2.6.0",
     "node-sass": "^7.0.1",
     "postcss": "^8.4.8",
@@ -52,10 +50,5 @@
     "npm-check-updates": "^11.8.5",
     "on-change": "^4.0.0",
     "yup": "^0.32.11"
-  },
-  "jest": {
-    "verbose": true,
-    "testURL": "http://localhost/",
-    "testEnvironment": "jsdom"
   }
 }

@@ -1,19 +1,12 @@
----
-root: true
-
-plugins:
-  - jest
-
 env:
   node: true
-  jest: true
   browser: true
 
 extends:
   - "airbnb-base"
-  - "plugin:jest/recommended"
 
 rules:
   no-console: 0
   import/extensions: 0
   no-unused-vars: 0
+  no-param-reassign: [ "error", { "props": true, "ignorePropertyModificationsForRegex": [ "watchedState", ], } ]

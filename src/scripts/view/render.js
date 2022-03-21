@@ -63,8 +63,6 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   const { isUpdate } = state.update;
   const { url } = elements.fields;
   const { form, feeds: feedsWrap, posts: postsWrap } = elements;
-
-  // console.log('isUpdate', isUpdate);
   
   if (!toRerend && !isUpdate) {
     feedsWrap.innerHTML = '';

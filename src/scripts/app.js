@@ -4,6 +4,7 @@ import render from './view/render';
 import formHandler from './controllers/form';
 import postsHandler from './controllers/posts';
 import resources from './locales/index';
+import updateRss from './api/updateRss';
 
 export default () => {
   const elements = {
@@ -42,6 +43,9 @@ export default () => {
         renderId: null,
       },
     },
+    update: {
+      interval: 5000
+    }
   };
 
   const i18nInstance = i18n.createInstance();
@@ -56,4 +60,6 @@ export default () => {
 
   formEl.addEventListener('submit', (e) => formHandler(e, formEl, elements, watchedState, i18nInstance));
   postsEl.addEventListener('click', (e) => postsHandler(e, elements, watchedState));
+  
+  setTimeout(() => updateRss(watchedState, i18nInstance), state.update.interval);
 };

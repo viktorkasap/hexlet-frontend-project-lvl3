@@ -37,7 +37,12 @@ export default (watchedState, i18nInstance, url) => {
 			
 			if (rssContent) {
 				toFillingStateFeeds(state, rssContent);
-				state.urls = [...state.urls, url];
+				
+				const isUrlExist = state.urls.includes(url);
+				if (!isUrlExist) {
+					state.urls = [...state.urls, url];
+				}
+				
 				state.form.process.status = 'sent';
 				state.form.process.info = i18nInstance.t('network.success.rss');
 			}

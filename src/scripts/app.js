@@ -1,10 +1,10 @@
 import onChange from 'on-change';
 import i18n from 'i18next';
 import render from './view/render';
-import formHandler from './controllers/form.js';
-import postsHandler from './controllers/posts.js';
-import resources from './locales/index.js';
-import updateRss from './api/updateRss.js';
+import formHandler from './controllers/form';
+import postsHandler from './controllers/posts';
+import resources from './locales/index';
+import updateRss from './api/updateRss';
 
 export default () => {
   const elements = {

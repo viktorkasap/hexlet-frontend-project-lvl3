@@ -32,5 +32,5 @@ export default (e, form, elements, watchedState, i18nInstance) => {
       }
     });
 
-  // console.log('state', state);
+  console.log('state', state);
 };

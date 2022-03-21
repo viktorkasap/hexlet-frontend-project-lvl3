@@ -14,7 +14,7 @@ const toFillingStateFeeds = (watchState, newFeed) => {
     }
     return false;
   });
-
+  
   state.feeds = mergedFeeds;
   return true;
 };
@@ -29,7 +29,7 @@ export default (watchedState, i18nInstance, url, isUpdate = null) => {
     })
     .then((content) => {
       const rssContent = parse(content);
-
+      
       if (!rssContent) {
         state.form.process.info = i18nInstance.t('errors.rss');
         state.form.process.status = 'error';
@@ -37,7 +37,7 @@ export default (watchedState, i18nInstance, url, isUpdate = null) => {
 
       if (rssContent) {
         toFillingStateFeeds(state, rssContent);
-
+        
         const isUrlExist = state.urls.includes(url);
         if (!isUrlExist) {
           state.urls = [...state.urls, url];

@@ -64,6 +64,8 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   const { url } = elements.fields;
   const { form, feeds: feedsWrap, posts: postsWrap } = elements;
 
+  // console.log('isUpdate', isUpdate);
+  
   if (!toRerend && !isUpdate) {
     feedsWrap.innerHTML = '';
     feedsWrap.insertAdjacentHTML('afterbegin', templateFeed(feeds, i18nInstance));
@@ -71,7 +73,7 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
 
   postsWrap.innerHTML = '';
   postsWrap.insertAdjacentHTML('afterbegin', templatePosts(state, i18nInstance));
-
+  
   if (!isUpdate) {
     form.reset();
     url.focus();

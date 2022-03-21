@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/kasapvictor/frontend-project-lvl3/workflows/hexlet-check/badge.svg)](https://github.com/kasapvictor/frontend-project-lvl3/actions)",
   "main": "./src/scripts/app.js",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kasapvictor/frontend-project-lvl3.git"
@@ -16,18 +17,26 @@
   "scripts": {
     "server": "NODE_ENV=development webpack serve",
     "build": "NODE_ENV=production webpack",
-    "develop": "NODE_ENV=development webpack",
-    "test": "@hexlet/code"
+    "build2": "NODE_ENV=development webpack",
+    "test": "jest --colors"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/eslint-parser": "^7.15.4",
+    "@babel/preset-env": "^7.16.11",
     "autoprefixer": "^10.4.2",
+    "babel-jest": "^27.1.1",
+    "babel-loader": "^8.2.3",
     "css-loader": "^6.7.1",
+    "debug": "^4.3.2",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-babel": "^5.3.1",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-jest": "^24.4.0",
     "html-webpack-plugin": "^5.5.0",
+    "jest": "^27.1.1",
+    "jest-cli": "^27.1.1",
     "mini-css-extract-plugin": "^2.6.0",
     "node-sass": "^7.0.1",
     "postcss": "^8.4.8",
@@ -46,8 +55,8 @@
     "bootstrap": "^5.1.3",
     "i18next": "^21.6.14",
     "lodash": "^4.17.21",
+    "npm-check-updates": "^11.8.5",
     "on-change": "^4.0.0",
-    "yup": "^0.32.11",
-    "npm-check-updates": "^11.8.5"
+    "yup": "^0.32.11"
   }
 }

@@ -70,7 +70,7 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
 
   postsWrap.innerHTML = '';
   postsWrap.insertAdjacentHTML('afterbegin', templatePosts(state, i18nInstance));
-  
+
   form.reset();
   url.focus();
 };

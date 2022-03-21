@@ -1,8 +1,8 @@
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import isObject from 'lodash/isObject';
-import templateFeed from '../templates/feeds';
-import templatePosts from '../templates/posts';
+import templateFeed from '../templates/feeds.js';
+import templatePosts from '../templates/posts.js';
 
 const cls = {
   sent: {

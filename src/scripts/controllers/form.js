@@ -1,6 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
-import validate from '../utils/validate';
-import getRss from '../api/getRss';
+import validate from '../utils/validate.js';
+import getRss from '../api/getRss.js';
 
 export default (e, form, elements, watchedState, i18nInstance) => {
   e.preventDefault();

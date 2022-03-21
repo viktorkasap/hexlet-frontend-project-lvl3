@@ -1,6 +1,6 @@
 import uniqWith from 'lodash/uniqWith';
-import parse from '../utils/parse';
-import api from './api';
+import parse from '../utils/parse.js';
+import api from './api.js';
 
 const toFillingStateFeeds = (watchState, newFeed) => {
   const state = watchState;

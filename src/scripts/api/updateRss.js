@@ -1,4 +1,4 @@
-import getRss from './getRss';
+import getRss from './getRss.js';
 
 const updateRss = (state, i18nInstance) => {
   const { urls } = state;

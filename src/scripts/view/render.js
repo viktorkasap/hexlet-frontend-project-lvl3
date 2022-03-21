@@ -1,8 +1,8 @@
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import isObject from 'lodash/isObject';
-import templateFeed from './templateFeed';
-import templatePosts from './templatePosts';
+import templateFeed from '../templates/feeds';
+import templatePosts from '../templates/posts';
 
 const cls = {
   sent: {
@@ -39,8 +39,7 @@ const handleProcessState = (elements, status) => {
 
 const renderPostToModal = (elements, watchedState, id) => {
   const state = watchedState;
-  state.ui.modal.renderId = null;
-
+  
   const { feeds } = state;
   const [feedId, postId] = id.split('-');
   const {
@@ -114,5 +113,6 @@ export default (state, elements, i18nInstance) => (path, value, prevValue) => {
 
   if (path === 'ui.modal.renderId' && value) {
     renderPostToModal(elements, state, value);
+    state.ui.modal.renderId = null;
   }
 };

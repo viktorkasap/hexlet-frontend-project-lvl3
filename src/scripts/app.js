@@ -1,8 +1,8 @@
 import onChange from 'on-change';
 import i18n from 'i18next';
-import render from './render';
-import formHandler from './form';
-import postsHandler from './posts';
+import render from './view/render';
+import formHandler from './controllers/form';
+import postsHandler from './controllers/posts';
 import resources from './locales/index';
 
 export default () => {

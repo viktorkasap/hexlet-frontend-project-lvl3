@@ -3,13 +3,14 @@ env:
   es2021: true
   node: true
 extends:
-  - airbnb-base
+  - "airbnb-base"
 parserOptions:
   ecmaVersion: latest
   sourceType: module
-rules:  {
-  indent: 0,
-  no-console: 0,
-  import/extensions: 0,
-  no-tabs: ["error", { allowIndentationTabs: true }],
-}
+rules:
+  indent: 0
+  no-console: 0
+  import/extensions: 0
+  no-unused-vars: 0
+  no-param-reassign: [ "error", { "props": true, "ignorePropertyModificationsForRegex": [ "watchedState", ], } ]
+  no-tabs: ["error", { allowIndentationTabs: true }]

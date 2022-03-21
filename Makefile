@@ -1,12 +1,20 @@
-#Makefile
+server:
+	NODE_ENV=development npx webpack serve
 
 install:
 	npm ci
-publish:
-	npm publish --dry-run
-lint:
-	npx eslint .
+
+build:
+	rm -rf dist
+	NODE_ENV=production npx webpack
+
 test:
 	npm test
-test-coverage:
-	npm test -- --coverage --coverageProvider=v8
+
+pretty:
+	npx prettier --write ./src/scss && npx prettier --write ./src/scripts
+
+lint:
+	npx eslint --fix ./src/scripts
+
+.PHONY: test

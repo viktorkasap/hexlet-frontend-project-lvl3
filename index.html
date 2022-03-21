@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+		name="viewport">
+  <meta content="ie=edge" http-equiv="X-UA-Compatible">
+  <title>RSS Агрегатор</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<header class="header">
+  <section class="container-fluid bg-dark p-5">
+	<div class="row">
+	  <div class="col-md-10 col-lg-8 mx-auto text-white">
+		<h1 class="display-3 mb-0">RSS агрегатор</h1>
+		<h2 class="lead">Начните читать RSS сегодня! Это легко, это красиво.</h2>
+		<form class="rss-form text-body" name="form-search">
+		  <div class="row">
+			<div class="col">
+			  <div class="form-floating">
+				<input aria-label="url"
+					   autofocus
+					   class="form-control w-100"
+					   id="url-input"
+					   name="url"
+					   placeholder="ссылка RSS"
+					   required>
+				<label class="url-input">Ссылка RSS</label>
+			  </div>
+			</div>
+			<div class="col-auto">
+			  <button aria-label="add" class="h-100 btn btn-lg btn-primary px-sm-5" id="submit" type="submit">Добавить
+			  </button>
+			</div>
+		  </div>
+		</form>
+		<p class="mt-2 mb-0 text-muted">Пример: https://ru.hexlet.io/lessons.rss</p>
+		<p class="feedback m-0 position-absolute small text-danger"></p>
+	  </div>
+	</div>
+  </section>
+</header>
+<main class="flex-grow-1">
+  <section class="container-fluid container-xxl p-5">
+	<div class="row">
+	  <div class="col-md-10 col-lg-8 order-1 mx-auto posts"></div>
+	  <div class="col-md-10 col-lg-4 mx-auto order-0 order-lg-1 feeds"></div>
+	</div>
+  </section>
+</main>
+<footer class="footer border-top py-3 mt-5 bg-light">
+  <div class="container-xl">
+	<span class="text-center display-block">created by
+	  <a class="padding-l-5" href="https://ru.hexlet.io/professions/frontend/projects/11" target="_blank">Hexlet</a>
+	</span>
+  </div>
+</footer>
+<div aria-hidden="true" aria-labelledby="modal" class="modal fade" id="modal" role="dialog" tabindex="-1">
+  <div class="modal-dialog" role="document">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<h5 class="modal-title"></h5>
+		<button aria-label="Close" class="btn-close close" data-bs-dismiss="modal" type="button"></button>
+	  </div>
+	  <div class="modal-body text-break"></div>
+	  <div class="modal-footer">
+		<a class="btn btn-primary full-article" href="#" rel="noopener noreferrer" role="button" target="_blank">
+		  Читать полностью
+		</a>
+		<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Закрыть</button>
+	  </div>
+	</div>
+  </div>
+</div>
+
+</body>
+</html>

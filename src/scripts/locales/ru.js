@@ -1,14 +1,14 @@
 export default {
   translation: {
     errors: {
-      url: 'Некорректный URL адрес',
-      notOneOf: 'URL уже существует',
-      required: 'Поле не должно быть пустым',
+      url: 'Ссылка должна быть валидным URL',
+      notOneOf: 'RSS уже существует',
+      required: 'Не должно быть пустым',
       rss: 'Ресурс не содержит валидный RSS',
     },
     network: {
       error: {
-        request: 'Ресурс не доступен',
+        request: 'Ошибка сети',
         default: 'Неизвестная ошибка. Что-то пошло не так.',
       },
       success: {

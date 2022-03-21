@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/kasapvictor/frontend-project-lvl3/workflows/hexlet-check/badge.svg)](https://github.com/kasapvictor/frontend-project-lvl3/actions)",
-  "main": "./src/scripts/index.js",
+  "main": "./src/scripts/init.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kasapvictor/frontend-project-lvl3.git"

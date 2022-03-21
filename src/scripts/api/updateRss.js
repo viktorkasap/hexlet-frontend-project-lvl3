@@ -3,7 +3,7 @@ import getRss from './getRss';
 const updateRss = (state, i18nInstance) => {
   const { urls } = state;
 
-  urls.forEach((url) => getRss(state, i18nInstance, url));
+  urls.forEach((url) => getRss(state, i18nInstance, url, 'update'));
 
   setTimeout(() => updateRss(state, i18nInstance), state.update.interval);
 };

@@ -60,10 +60,13 @@ const renderPostToModal = (elements, watchedState, id) => {
 
 const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   const { feeds } = state;
+  const { isUpdate } = state.update;
   const { url } = elements.fields;
   const { form, feeds: feedsWrap, posts: postsWrap } = elements;
 
-  if (!toRerend) {
+  // console.log('isUpdate', isUpdate);
+  
+  if (!toRerend && !isUpdate) {
     feedsWrap.innerHTML = '';
     feedsWrap.insertAdjacentHTML('afterbegin', templateFeed(feeds, i18nInstance));
   }
@@ -71,8 +74,10 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   postsWrap.innerHTML = '';
   postsWrap.insertAdjacentHTML('afterbegin', templatePosts(state, i18nInstance));
   
-  form.reset();
-  // url.focus();
+  if (!isUpdate) {
+    form.reset();
+    url.focus();
+  }
 };
 
 const rendeStatus = (elements, status, info) => {

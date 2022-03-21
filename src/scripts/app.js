@@ -45,6 +45,7 @@ export default () => {
     },
     update: {
       interval: 5000,
+      isUpdate: null,
     },
   };
 

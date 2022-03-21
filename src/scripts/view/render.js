@@ -39,7 +39,7 @@ const handleProcessState = (elements, status) => {
 
 const renderPostToModal = (elements, watchedState, id) => {
   const state = watchedState;
-  
+
   const { feeds } = state;
   const [feedId, postId] = id.split('-');
   const {
@@ -47,11 +47,7 @@ const renderPostToModal = (elements, watchedState, id) => {
     description: postDescription,
     link: postLink,
   } = feeds[feedId].posts[postId];
-  const {
-    title: modalTitle,
-    body: modalBody,
-    link: modalLink,
-  } = elements.modal;
+  const { title: modalTitle, body: modalBody, link: modalLink } = elements.modal;
 
   modalTitle.innerHTML = '';
   modalTitle.textContent = postTitle;
@@ -95,7 +91,8 @@ const rendeStatus = (elements, status, info) => {
   inputUrl.classList.add(cls[status].url);
 };
 
-export default (state, elements, i18nInstance) => (path, value, prevValue) => {
+export default (watchedState, elements, i18nInstance) => (path, value, prevValue) => {
+  const state = watchedState;
   const { status, info } = state.form.process;
 
   if ((path === 'form.process.status' || path === 'form.process.info') && status !== 'sending') {

@@ -44,8 +44,8 @@ export default () => {
       },
     },
     update: {
-      interval: 5000
-    }
+      interval: 5000,
+    },
   };
 
   const i18nInstance = i18n.createInstance();
@@ -60,6 +60,6 @@ export default () => {
 
   formEl.addEventListener('submit', (e) => formHandler(e, formEl, elements, watchedState, i18nInstance));
   postsEl.addEventListener('click', (e) => postsHandler(e, elements, watchedState));
-  
+
   setTimeout(() => updateRss(watchedState, i18nInstance), state.update.interval);
 };

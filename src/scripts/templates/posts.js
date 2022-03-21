@@ -1,6 +1,6 @@
 const cls = {
   novisited: 'fw-bold',
-  visited: 'link-secondary',
+  visited: 'fw-normal link-secondary',
 };
 
 const items = (state, i18nInstance) => {

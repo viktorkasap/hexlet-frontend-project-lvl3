@@ -1,4 +1,4 @@
-import isEmpty from 'lodash/isEmpty';
+import isEmpty from 'lodash/isEmpty.js';
 import validate from '../utils/validate.js';
 import getRss from '../api/getRss.js';
 

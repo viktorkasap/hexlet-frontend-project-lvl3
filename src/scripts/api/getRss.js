@@ -1,4 +1,4 @@
-import uniqWith from 'lodash/uniqWith';
+import uniqWith from 'lodash/uniqWith.js';
 import parse from '../utils/parse.js';
 import api from './api.js';
 

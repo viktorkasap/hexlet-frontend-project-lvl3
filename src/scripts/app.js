@@ -1,10 +1,10 @@
 import onChange from 'on-change';
 import i18n from 'i18next';
-import render from './view/render';
-import formHandler from './controllers/form';
-import postsHandler from './controllers/posts';
-import resources from './locales/index';
-import updateRss from './api/updateRss';
+import render from './view/render.js';
+import formHandler from './controllers/form.js';
+import postsHandler from './controllers/posts.js';
+import resources from './locales/index.js';
+import updateRss from './api/updateRss.js';
 
 export default () => {
   const elements = {
@@ -54,7 +54,7 @@ export default () => {
     lng: state.lng,
     debug: true,
     resources,
-  })
+  });
   
   window.addEventListener('DOMContentLoaded', () => {
     const { form: formEl, posts: postsEl } = elements;

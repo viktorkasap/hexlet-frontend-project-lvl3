@@ -1,6 +1,6 @@
-import isEqual from 'lodash/isEqual';
-import isEmpty from 'lodash/isEmpty';
-import isObject from 'lodash/isObject';
+import isEqual from 'lodash/isEqual.js';
+import isEmpty from 'lodash/isEmpty.js';
+import isObject from 'lodash/isObject.js';
 import templateFeed from '../templates/feeds.js';
 import templatePosts from '../templates/posts.js';
 

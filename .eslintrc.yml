@@ -14,4 +14,4 @@ rules:
   import/extensions: 0
   no-unused-vars: 0
   no-param-reassign: [ "error", { "props": true, "ignorePropertyModificationsForRegex": [ "watchedState", ], } ]
-  no-tabs: ["error", { allowIndentationTabs: true }],
+  no-tabs: ["error", { allowIndentationTabs: true }]

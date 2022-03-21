@@ -7,7 +7,7 @@ module.exports = {
         },
         browserslistEnv: "> 0.25% not dead",
       },
-      "modules": false
+      modules: false
     ],
   ],
 };

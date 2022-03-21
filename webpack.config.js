@@ -92,7 +92,7 @@ module.exports = {
 			favicon: "./src/images/256x256.png",
 			// template: './index.pug',
 			template: './index.html',
-			// inject: 'body',
+			inject: 'body',
 		})
 	],
 };

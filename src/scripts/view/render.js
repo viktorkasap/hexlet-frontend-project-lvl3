@@ -63,7 +63,7 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   const { isUpdate } = state.update;
   const { url } = elements.fields;
   const { form, feeds: feedsWrap, posts: postsWrap } = elements;
-  
+
   if (!toRerend && !isUpdate) {
     feedsWrap.innerHTML = '';
     feedsWrap.insertAdjacentHTML('afterbegin', templateFeed(feeds, i18nInstance));
@@ -80,7 +80,7 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
 
 const rendeStatus = (elements, status, info) => {
   if (!status || !info) return;
-  
+
   const { message: messageEL } = elements;
   const { url: inputUrl } = elements.fields;
   const messageContent = isObject(info) ? info.url.message : info;
@@ -101,7 +101,7 @@ const rendeStatus = (elements, status, info) => {
 export default (watchedState, elements, i18nInstance) => (path, value, prevValue) => {
   const state = watchedState;
   const { status, info } = state.form.process;
-  
+
   if ((path === 'form.process.status' || path === 'form.process.info') && status !== 'sending') {
     rendeStatus(elements, status, info);
   }

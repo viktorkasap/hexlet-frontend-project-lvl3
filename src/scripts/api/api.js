@@ -12,4 +12,3 @@ const buildUrl = (url) => {
 };
 
 export default (url) => axios.get(buildUrl(url));
-

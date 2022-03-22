@@ -1,5 +1,3 @@
-import isEqual from 'lodash/isEqual.js';
-import isEmpty from 'lodash/isEmpty.js';
 import isObject from 'lodash/isObject.js';
 import templateFeed from '../templates/feeds.js';
 import templatePosts from '../templates/posts.js';
@@ -62,7 +60,7 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   const { feeds } = state;
   const { isUpdate } = state.update;
   const { url } = elements.fields;
-  const { form, feeds: feedsWrap, posts: postsWrap } = elements;
+  const { feeds: feedsWrap, posts: postsWrap } = elements;
 
   if (!toRerend && !isUpdate) {
     feedsWrap.innerHTML = '';
@@ -91,32 +89,25 @@ const rendeStatus = (elements, status, info) => {
   messageEL.classList.add(cls[status].message);
 
   const urlClsToRemove = cls[statusType(status)].url;
-  const urlClsToAdd = cls[status].url;
   if (urlClsToRemove) {
     inputUrl.classList.remove(urlClsToRemove);
   }
   inputUrl.classList.add(cls[status].url);
 };
 
-export default (watchedState, elements, i18nInstance) => (path, value, prevValue) => {
+export default (watchedState, elements, i18nInstance) => (path, value) => {
   const state = watchedState;
   const { status, info } = state.form.process;
-
   if ((path === 'form.process.status' || path === 'form.process.info') && status !== 'sending') {
     rendeStatus(elements, status, info);
   }
-  
   if (value === 'sent' || path === 'ui.viewedPostsIds') {
     const toRerend = path === 'ui.viewedPostsIds';
     renderFeeds(state, elements, i18nInstance, toRerend);
   }
-
   if (value === 'error' || value === 'sending' || value === 'sent') {
-    console.log('PATH', path);
-    console.log('VALUE', value);
     handleProcessState(elements, value);
   }
-  
   if (path === 'ui.modal.renderId' && value) {
     renderPostToModal(elements, state, value);
     state.ui.modal.renderId = null;

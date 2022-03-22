@@ -56,7 +56,7 @@ export default () => {
     resources,
   });
 
-  const { form: formEl, posts: postsEl, submit } = elements;
+  const { form: formEl, posts: postsEl } = elements;
   const watchedState = onChange(state, render(state, elements, i18nInstance));
 
   formEl.addEventListener('submit', (e) => {

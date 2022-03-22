@@ -9,7 +9,7 @@ export default (e, form, elements, watchedState, i18nInstance) => {
   const formData = new FormData(form);
 
   // FILL FIELDS VALUES OF STATE
-  Object.entries(elements.fields).forEach(([name, element]) => {
+  Object.entries(elements.fields).forEach(([name, ]) => {
     state.form.fields[name] = formData.get(name).trim();
   });
 

@@ -68,7 +68,9 @@ export default () => {
     submit.addEventListener('click', (e) => {
       formHandler(e, formEl, elements, watchedState, i18nInstance);
     });
-    postsEl.addEventListener('click', (e) => postsHandler(e, elements, watchedState));
+    postsEl.addEventListener('click', (e) => {
+      postsHandler(e, elements, watchedState)
+    });
     setTimeout(() => updateRss(watchedState, i18nInstance), state.update.interval);
   });
 };

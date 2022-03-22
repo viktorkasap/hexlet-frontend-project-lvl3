@@ -42,11 +42,12 @@ export default (watchedState, i18nInstance, url, isUpdate = null) => {
         if (!isUrlExist) {
           state.urls = [...state.urls, url];
         }
-
-        state.form.process.status = 'sent';
-        state.update.isUpdate = isUpdate;
-        state.form.process.info = i18nInstance.t('network.success.rss');
       }
+    })
+    .then(() => {
+      state.form.process.status = 'sent';
+      state.update.isUpdate = isUpdate;
+      state.form.process.info = i18nInstance.t('network.success.rss');
     })
     .catch((err) => {
       if (err.request) {

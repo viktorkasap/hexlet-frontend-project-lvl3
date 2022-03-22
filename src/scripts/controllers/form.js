@@ -4,9 +4,7 @@ import getRss from '../api/getRss.js';
 
 export default (e, form, elements, watchedState, i18nInstance) => {
   e.preventDefault();
-
-  console.log('FORM SUBMIT', form);
-
+  
   const state = watchedState;
   const formData = new FormData(form);
 

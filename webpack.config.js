@@ -12,7 +12,7 @@ export default {
     watchFiles: [
       './src/**/*',
       './*.html',
-      './*.pug'
+      './*.pug',
     ],
   },
   plugins: [

@@ -18,8 +18,8 @@ const cls = {
 const statusType = (type) => (type === 'error' ? 'sent' : 'error');
 
 const handleProcessState = (elements, status) => {
-  const { submit, form } = elements;
-  const { url: inputUrl } = form;
+  const { submit } = elements;
+  const { url: inputUrl } = elements.fields;
 
   switch (true) {
     case status === 'sending':

@@ -8,7 +8,7 @@ import updateRss from './api/updateRss.js';
 
 export default () => {
   const elements = {
-    form: document['form-search'],
+    form: document.querySelector('.rss-form'),
     fields: {
       url: document.getElementById('url-input'),
     },

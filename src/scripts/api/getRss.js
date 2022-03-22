@@ -49,6 +49,7 @@ export default (watchedState, i18nInstance, url, isUpdate = null) => {
       }
     })
     .catch((err) => {
+      console.log('ERROR GET CONTENT BY URL', err.message);
       if (err.request) {
         state.form.process.info = i18nInstance.t('network.error.request');
       } else {

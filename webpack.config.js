@@ -5,6 +5,12 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 export default {
   mode: process.env.NODE_ENV || 'development',
   entry: './src/scripts/index.js',
+  devServer: {
+    hot: true,
+    port: 9000,
+    static: './dist',
+    watchFiles: ['./src/**/*', './*.html', './*.pug',],
+  },
   plugins: [
     new HtmlWebpackPlugin({
       favicon: "./src/images/256x256.png",

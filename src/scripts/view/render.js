@@ -18,10 +18,8 @@ const cls = {
 const statusType = (type) => (type === 'error' ? 'sent' : 'error');
 
 const handleProcessState = (elements, status) => {
-  // const { submit } = elements;
-  // const { url: inputUrl } = elements.fields;
-  const inputUrl = document.getElementById('url-input');
-  const submit = document.getElementById('submit');
+  const { submit } = elements;
+  const { url: inputUrl } = elements.fields;
   
   switch (true) {
     case status === 'sending':
@@ -75,7 +73,7 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   postsWrap.insertAdjacentHTML('afterbegin', templatePosts(state, i18nInstance));
 
   if (!isUpdate) {
-    form.reset();
+    url.value = '';
     url.focus();
   }
 };

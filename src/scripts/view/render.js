@@ -20,7 +20,7 @@ const statusType = (type) => (type === 'error' ? 'sent' : 'error');
 const handleProcessState = (elements, status) => {
   const { submit } = elements;
   const { url: inputUrl } = elements.fields;
-  
+
   switch (true) {
     case status === 'sending':
       submit.disabled = true;
@@ -105,16 +105,18 @@ export default (watchedState, elements, i18nInstance) => (path, value, prevValue
   if ((path === 'form.process.status' || path === 'form.process.info') && status !== 'sending') {
     rendeStatus(elements, status, info);
   }
-
-  if (value === 'error' || value === 'sending' || value === 'sent') {
-    handleProcessState(elements, value);
-  }
-
+  
   if (value === 'sent' || path === 'ui.viewedPostsIds') {
     const toRerend = path === 'ui.viewedPostsIds';
     renderFeeds(state, elements, i18nInstance, toRerend);
   }
 
+  if (value === 'error' || value === 'sending' || value === 'sent') {
+    console.log('PATH', path);
+    console.log('VALUE', value);
+    handleProcessState(elements, value);
+  }
+  
   if (path === 'ui.modal.renderId' && value) {
     renderPostToModal(elements, state, value);
     state.ui.modal.renderId = null;

@@ -21,10 +21,10 @@ const toFillingStateFeeds = (watchState, newFeed) => {
 
 export default (watchedState, i18nInstance, url, isUpdate = null) => {
   const state = watchedState;
-
+  state.form.process.status = 'sending';
+  
   api(url)
     .then((response) => {
-      state.form.process.status = 'sending';
       return response.data.contents;
     })
     .then((content) => {
@@ -56,6 +56,6 @@ export default (watchedState, i18nInstance, url, isUpdate = null) => {
         state.form.process.info = i18nInstance.t('network.error.default');
       }
       state.form.process.status = 'error';
-      throw err;
+      // throw err;
     });
 };

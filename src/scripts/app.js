@@ -55,17 +55,15 @@ export default () => {
     debug: true,
     resources,
   });
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const { form: formEl, posts: postsEl, submit } = elements;
-    const watchedState = onChange(state, render(state, elements, i18nInstance));
-    
-    formEl.addEventListener('submit', (e) => {
-      formHandler(e, formEl, elements, watchedState, i18nInstance)
-    });
-    postsEl.addEventListener('click', (e) => {
-      postsHandler(e, elements, watchedState)
-    });
-    setTimeout(() => updateRss(watchedState, i18nInstance), state.update.interval);
+  
+  const { form: formEl, posts: postsEl, submit } = elements;
+  const watchedState = onChange(state, render(state, elements, i18nInstance));
+  
+  formEl.addEventListener('submit', (e) => {
+    formHandler(e, formEl, elements, watchedState, i18nInstance)
   });
+  postsEl.addEventListener('click', (e) => {
+    postsHandler(e, elements, watchedState)
+  });
+  setTimeout(() => updateRss(watchedState, i18nInstance), state.update.interval);
 };

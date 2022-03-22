@@ -9,7 +9,7 @@ export default {
     hot: true,
     port: 9000,
     static: './dist',
-    watchFiles: ['./src/**/*', './*.html', './*.pug']
+    watchFiles: ['./src/**/*', './*.html', './*.pug',]
   },
   plugins: [
     new HtmlWebpackPlugin({

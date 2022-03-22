@@ -40,8 +40,7 @@ export default (watchedState, i18nInstance, url, isUpdate = null) => {
           state.urls = [...state.urls, url];
         }
       }
-    })
-    .then(() => {
+      
       state.form.process.status = 'sent';
       state.update.isUpdate = isUpdate;
       state.form.process.info = i18nInstance.t('network.success.rss');

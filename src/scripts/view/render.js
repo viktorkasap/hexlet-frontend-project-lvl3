@@ -18,9 +18,11 @@ const cls = {
 const statusType = (type) => (type === 'error' ? 'sent' : 'error');
 
 const handleProcessState = (elements, status) => {
-  const { submit } = elements;
-  const { url: inputUrl } = elements.fields;
-
+  // const { submit } = elements;
+  // const { url: inputUrl } = elements.fields;
+  const inputUrl = document.getElementById('url-input');
+  const submit = document.getElementById('submit');
+  
   switch (true) {
     case status === 'sending':
       submit.disabled = true;

@@ -11,4 +11,6 @@ const buildUrl = (url) => {
   return newUrl.href;
 };
 
-export default (url) => axios.get(buildUrl(url));
+// export default (url) => axios.get(buildUrl(url));
+export default (url) => axios.get(`https://hexlet-allorigins.herokuapp.com/get?disableCache=true&url=${url}`);
+

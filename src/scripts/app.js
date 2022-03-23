@@ -22,7 +22,7 @@ const toFillingStateFeeds = (watchState, newFeed) => {
 	});
 	
 	state.feeds = mergedFeeds;
-	return true;
+	return Promise.resolve();
 };
 
 const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
@@ -39,19 +39,18 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 			}
 			
 			if (rssContent) {
-				rssContent
-					.then((data) => {
-					toFillingStateFeeds(state, data);
-					
-					const isUrlExist = state.urls.includes(url);
-					if (!isUrlExist) {
-						state.urls = [...state.urls, url];
-					}
-					
-					state.form.process.status = 'sent';
-					state.update.isUpdate = isUpdate;
-					state.form.process.info = i18nInstance.t('network.success.rss');
-				})
+				const processFillFeeds = toFillingStateFeeds(state, rssContent);
+				processFillFeeds
+					.then(() => {
+						const isUrlExist = state.urls.includes(url);
+						if (!isUrlExist) {
+							state.urls = [...state.urls, url];
+						}
+						
+						state.form.process.status = 'sent';
+						state.update.isUpdate = isUpdate;
+						state.form.process.info = i18nInstance.t('network.success.rss');
+					});
 			}
 		})
 		.catch((err) => {
@@ -65,7 +64,7 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 };
 
 const updateRss = (state, i18nInstance) => {
-	const { urls } = state;
+	const {urls} = state;
 	
 	urls.forEach((url) => getRss(state, i18nInstance, url, 'update'));
 	
@@ -73,12 +72,12 @@ const updateRss = (state, i18nInstance) => {
 };
 
 const postsHandler = (e, elements, watchedState) => {
-	const { target: el } = e;
+	const {target: el} = e;
 	const state = watchedState;
-	const { viewedPostsIds } = state.ui;
+	const {viewedPostsIds} = state.ui;
 	
 	if (el.dataset.postId) {
-		const { postId: id } = el.dataset;
+		const {postId: id} = el.dataset;
 		const hasViewedId = viewedPostsIds.includes(id);
 		
 		if (!hasViewedId) {
@@ -117,7 +116,7 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
 			
 			// AXIOS GET DATA OF LINK
 			if (state.form.valid) {
-				const { url } = state.form.fields;
+				const {url} = state.form.fields;
 				getRss(state, i18nInstance, url);
 			}
 		});
@@ -173,7 +172,7 @@ export default () => {
 		resources,
 	});
 	
-	const { form: formEl, posts: postsEl } = elements;
+	const {form: formEl, posts: postsEl} = elements;
 	const watchedState = onChange(state, render(state, elements, i18nInstance));
 	
 	formEl.addEventListener('submit', (e) => {

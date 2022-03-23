@@ -1,6 +1,6 @@
 import isObject from 'lodash/isObject.js';
-import templateFeed from '../templates/feeds.js';
-import templatePosts from '../templates/posts.js';
+import templateFeed from './templates/feeds.js';
+import templatePosts from './templates/posts.js';
 
 const cls = {
   sent: {

@@ -1,6 +1,6 @@
-import isEmpty from 'lodash/isEmpty';
-import validate from '../utils/validate';
-import getRss from '../api/getRss';
+import isEmpty from 'lodash/isEmpty.js';
+import validate from '../utils/validate.js';
+import getRss from '../api/getRss.js';
 
 export default (e, form, elements, watchedState, i18nInstance) => {
   e.preventDefault();
@@ -9,7 +9,7 @@ export default (e, form, elements, watchedState, i18nInstance) => {
   const formData = new FormData(form);
 
   // FILL FIELDS VALUES OF STATE
-  Object.entries(elements.fields).forEach(([name, element]) => {
+  Object.entries(elements.fields).forEach(([name]) => {
     state.form.fields[name] = formData.get(name).trim();
   });
 
@@ -32,5 +32,5 @@ export default (e, form, elements, watchedState, i18nInstance) => {
       }
     });
 
-  console.log('state', state);
+  // console.log('state', state);
 };

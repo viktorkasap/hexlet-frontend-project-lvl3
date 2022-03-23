@@ -1,14 +1,14 @@
 import onChange from 'on-change';
 import i18n from 'i18next';
-import render from './view/render';
-import formHandler from './controllers/form';
-import postsHandler from './controllers/posts';
-import resources from './locales/index';
-import updateRss from './api/updateRss';
+import render from './view/render.js';
+import formHandler from './controllers/form.js';
+import postsHandler from './controllers/posts.js';
+import resources from './locales/index.js';
+import updateRss from './api/updateRss.js';
 
 export default () => {
   const elements = {
-    form: document['form-search'],
+    form: document.querySelector('.rss-form'),
     fields: {
       url: document.getElementById('url-input'),
     },
@@ -45,6 +45,7 @@ export default () => {
     },
     update: {
       interval: 5000,
+      isUpdate: null,
     },
   };
 
@@ -58,8 +59,11 @@ export default () => {
   const { form: formEl, posts: postsEl } = elements;
   const watchedState = onChange(state, render(state, elements, i18nInstance));
 
-  formEl.addEventListener('submit', (e) => formHandler(e, formEl, elements, watchedState, i18nInstance));
-  postsEl.addEventListener('click', (e) => postsHandler(e, elements, watchedState));
-
+  formEl.addEventListener('submit', (e) => {
+    formHandler(e, formEl, elements, watchedState, i18nInstance);
+  });
+  postsEl.addEventListener('click', (e) => {
+    postsHandler(e, elements, watchedState);
+  });
   setTimeout(() => updateRss(watchedState, i18nInstance), state.update.interval);
 };

@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import keyBy from 'lodash/keyBy';
+import keyBy from 'lodash/keyBy.js';
 
 const schema = (urls, i18nInstance) => yup.object().shape({
   url: yup

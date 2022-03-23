@@ -1,8 +1,6 @@
-import isEqual from 'lodash/isEqual';
-import isEmpty from 'lodash/isEmpty';
-import isObject from 'lodash/isObject';
-import templateFeed from '../templates/feeds';
-import templatePosts from '../templates/posts';
+import isObject from 'lodash/isObject.js';
+import templateFeed from '../templates/feeds.js';
+import templatePosts from '../templates/posts.js';
 
 const cls = {
   sent: {
@@ -18,8 +16,8 @@ const cls = {
 const statusType = (type) => (type === 'error' ? 'sent' : 'error');
 
 const handleProcessState = (elements, status) => {
-  const { submit, form } = elements;
-  const { url: inputUrl } = form;
+  const { submit } = elements;
+  const { url: inputUrl } = elements.fields;
 
   switch (true) {
     case status === 'sending':
@@ -60,19 +58,22 @@ const renderPostToModal = (elements, watchedState, id) => {
 
 const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   const { feeds } = state;
+  const { isUpdate } = state.update;
   const { url } = elements.fields;
-  const { form, feeds: feedsWrap, posts: postsWrap } = elements;
+  const { feeds: feedsWrap, posts: postsWrap } = elements;
 
-  if (!toRerend) {
+  if (!toRerend && !isUpdate) {
     feedsWrap.innerHTML = '';
     feedsWrap.insertAdjacentHTML('afterbegin', templateFeed(feeds, i18nInstance));
   }
 
   postsWrap.innerHTML = '';
   postsWrap.insertAdjacentHTML('afterbegin', templatePosts(state, i18nInstance));
-  
-  form.reset();
-  // url.focus();
+
+  if (!isUpdate) {
+    url.value = '';
+    url.focus();
+  }
 };
 
 const rendeStatus = (elements, status, info) => {
@@ -88,30 +89,25 @@ const rendeStatus = (elements, status, info) => {
   messageEL.classList.add(cls[status].message);
 
   const urlClsToRemove = cls[statusType(status)].url;
-  const urlClsToAdd = cls[status].url;
   if (urlClsToRemove) {
     inputUrl.classList.remove(urlClsToRemove);
   }
   inputUrl.classList.add(cls[status].url);
 };
 
-export default (watchedState, elements, i18nInstance) => (path, value, prevValue) => {
+export default (watchedState, elements, i18nInstance) => (path, value) => {
   const state = watchedState;
   const { status, info } = state.form.process;
-
   if ((path === 'form.process.status' || path === 'form.process.info') && status !== 'sending') {
     rendeStatus(elements, status, info);
   }
-
-  if (value === 'error' || value === 'sending' || value === 'sent') {
-    handleProcessState(elements, value);
-  }
-
   if (value === 'sent' || path === 'ui.viewedPostsIds') {
     const toRerend = path === 'ui.viewedPostsIds';
     renderFeeds(state, elements, i18nInstance, toRerend);
   }
-
+  if (value === 'error' || value === 'sending' || value === 'sent') {
+    handleProcessState(elements, value);
+  }
   if (path === 'ui.modal.renderId' && value) {
     renderPostToModal(elements, state, value);
     state.ui.modal.renderId = null;

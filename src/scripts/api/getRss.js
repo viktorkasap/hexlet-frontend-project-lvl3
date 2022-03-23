@@ -1,6 +1,6 @@
-import uniqWith from 'lodash/uniqWith';
-import parse from '../utils/parse';
-import api from './api';
+import uniqWith from 'lodash/uniqWith.js';
+import parse from '../utils/parse.js';
+import api from './api.js';
 
 const toFillingStateFeeds = (watchState, newFeed) => {
   const state = watchState;
@@ -19,14 +19,11 @@ const toFillingStateFeeds = (watchState, newFeed) => {
   return true;
 };
 
-export default (watchedState, i18nInstance, url) => {
+export default (watchedState, i18nInstance, url, isUpdate = null) => {
   const state = watchedState;
-
+  state.form.process.status = 'sending';
   api(url)
-    .then((response) => {
-      state.form.process.status = 'sending';
-      return response.data.contents;
-    })
+    .then((response) => response.data.contents)
     .then((content) => {
       const rssContent = parse(content);
 
@@ -42,10 +39,12 @@ export default (watchedState, i18nInstance, url) => {
         if (!isUrlExist) {
           state.urls = [...state.urls, url];
         }
-
-        state.form.process.status = 'sent';
-        state.form.process.info = i18nInstance.t('network.success.rss');
       }
+    })
+    .then(() => {
+      state.form.process.status = 'sent';
+      state.update.isUpdate = isUpdate;
+      state.form.process.info = i18nInstance.t('network.success.rss');
     })
     .catch((err) => {
       if (err.request) {
@@ -54,6 +53,5 @@ export default (watchedState, i18nInstance, url) => {
         state.form.process.info = i18nInstance.t('network.error.default');
       }
       state.form.process.status = 'error';
-      throw err;
     });
 };

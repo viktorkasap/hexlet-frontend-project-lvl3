@@ -28,8 +28,8 @@ export default (content) => {
   const hasError = document.querySelector('parsererror');
 
   if (hasError) {
-    const errorText = hasError.textContent;
-    const error = new Error(errorText);
+    const message = hasError.textContent;
+    const error = new Error(message);
     error.type = 'parse';
     throw error;
   }

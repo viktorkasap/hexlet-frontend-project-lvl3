@@ -44,11 +44,11 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 		})
 		.catch((err) => {
 			state.form.status = 'error';
-			
+
 			if (err.request) {
 				state.status.error = 'network.error.request';
 			}
-			
+
 			if (err.type === 'parse') {
 				state.status.error = 'errors.rss';
 			}

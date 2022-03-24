@@ -96,16 +96,16 @@ const typeStatus = (str) => (str.includes('error') ? 'error' : 'success');
 
 export default (watchedState, elements, i18nInstance) => (path, value) => {
   const state = watchedState;
-  
+
   if (path === 'ui.modal.renderId' && value) {
     renderPostToModal(elements, state, value);
   }
-  
+
   if (value === 'sent' || path === 'ui.viewedPostsIds') {
     const toRerend = path === 'ui.viewedPostsIds';
     renderFeeds(state, elements, i18nInstance, toRerend);
   }
-  
+
   if (path === 'status.error' || path === 'status.success') {
     rendeStatus(elements, i18nInstance, value, typeStatus(path));
   }

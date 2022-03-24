@@ -1,3 +1,5 @@
+import sanitize from '../utils/sanitize.js';
+
 const cls = {
   novisited: 'fw-bold',
   visited: 'fw-normal link-secondary',
@@ -20,7 +22,8 @@ const items = (state, i18nInstance) => {
                  class="${clsLink}"
                  data-post-id="${id}"
                  target="_blank"
-                 rel="noopener noreferrer">${post.title}
+                 rel="noopener noreferrer">
+                ${sanitize(post.title)}
               </a>
              <button type="button"
                      class="btn btn-outline-primary btn-sm"

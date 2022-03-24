@@ -1,3 +1,4 @@
+import uniq from 'lodash/uniq.js';
 import uniqWith from 'lodash/uniqWith.js';
 import isEmpty from 'lodash/isEmpty.js';
 import onChange from 'on-change';
@@ -27,33 +28,19 @@ const toFillingStateFeeds = (watchState, newFeed) => {
 
 const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 	const state = watchedState;
-	state.form.status = 'sending';
+
 	api(url)
-		.then((response) => response.data.contents)
-		.then((rawContent) => {
-			const rssContent = parse(rawContent);
+		.then((response) => {
+			const rssContent = parse(response.data.contents);
+			const processFillingStateFeeds = toFillingStateFeeds(state, rssContent);
 
-			if (!rssContent) {
-				state.form.status = 'error';
-				state.status.error = i18nInstance.t('errors.rss');
-			}
-
-			if (rssContent) {
-				const processFillingStateFeeds = toFillingStateFeeds(state, rssContent);
-				
-				processFillingStateFeeds
-					.then(() => {
-						const isUrlExist = state.urls.includes(url);
-						
-						if (!isUrlExist) {
-							state.urls = [...state.urls, url];
-						}
-						
-						state.form.status = 'sent';
-						state.update.isUpdate = isUpdate;
-						state.status.success = i18nInstance.t('network.success.rss');
-					});
-			}
+			processFillingStateFeeds
+				.then(() => {
+					state.urls = uniq([...state.urls, url]);
+					state.form.status = 'sent';
+					state.update.isUpdate = isUpdate;
+					state.status.success = i18nInstance.t('network.success.rss');
+				});
 		})
 		.catch((err) => {
 			state.form.status = 'error';
@@ -62,6 +49,10 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 				state.status.error = i18nInstance.t('network.error.request');
 			} else {
 				state.status.error = i18nInstance.t('network.error.default');
+			}
+
+			if (err.type === 'parse') {
+				state.status.error = i18nInstance.t('errors.rss');
 			}
 		});
 };
@@ -99,6 +90,8 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
 	const state = watchedState;
 	const { form } = elements;
 	const formData = new FormData(form);
+
+	state.form.status = 'sending';
 
 	Object.entries(elements.fields).forEach(([name]) => {
 		state.form.fields[name] = formData.get(name).trim();

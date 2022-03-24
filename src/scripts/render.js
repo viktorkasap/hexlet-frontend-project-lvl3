@@ -1,6 +1,7 @@
 import isObject from 'lodash/isObject.js';
 import templateFeed from './templates/feeds.js';
 import templatePosts from './templates/posts.js';
+import sanitize from './utils/sanitize.js';
 
 const cls = {
   success: {
@@ -45,10 +46,10 @@ const renderPostToModal = (elements, watchedState, id) => {
   const { title: modalTitle, body: modalBody, link: modalLink } = elements.modal;
 
   modalTitle.innerHTML = '';
-  modalTitle.textContent = postTitle;
+  modalTitle.textContent = sanitize(postTitle);
 
   modalBody.innerHTML = '';
-  modalBody.textContent = postDescription;
+  modalBody.textContent = sanitize(postDescription);
 
   modalLink.href = postLink;
 };
@@ -78,11 +79,6 @@ const rendeStatus = (elements, value, type) => {
   const { url: inputUrl } = elements.fields;
   const messageContent = isObject(value) ? value.url.message : value;
   const revertType = (str) => (str === 'error' ? 'success' : 'error');
-  
-  console.log('value', value);
-  console.log('type', type);
-  console.log('revertType(type)', revertType(type))
-  console.log('cls[revertType(type)].message', cls[revertType(type)].message)
 
   messageEL.innerHTML = '';
   messageEL.textContent = messageContent;

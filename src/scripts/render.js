@@ -3,10 +3,6 @@ import templateFeed from './templates/feeds.js';
 import templatePosts from './templates/posts.js';
 
 const cls = {
-  sent: {
-    message: 'text-success',
-    url: null,
-  },
   success: {
     message: 'text-success',
     url: null,
@@ -20,18 +16,18 @@ const cls = {
 const handleProcessState = (elements, status) => {
   const { submit } = elements;
   const { url: inputUrl } = elements.fields;
-  
+
   switch (true) {
     case status === 'sending':
       submit.disabled = true;
       inputUrl.readOnly = true;
       break;
-    
+
     case status === 'error' || status === 'sent':
       submit.disabled = false;
       inputUrl.readOnly = false;
       break;
-    
+
     default:
       break;
   }
@@ -82,13 +78,13 @@ const rendeStatus = (elements, value, type) => {
   const { message: messageEL } = elements;
   const { url: inputUrl } = elements.fields;
   const messageContent = isObject(value) ? value.url.message : value;
-  const revertType = (type) => (type === 'error' ? 'sent' : 'error');
-  
+  const revertType = (str) => (str === 'error' ? 'sent' : 'error');
+
   messageEL.innerHTML = '';
   messageEL.textContent = messageContent;
   messageEL.classList.remove(cls[revertType(type)].message);
   messageEL.classList.add(cls[type].message);
-  
+
   const urlClsToRemove = cls[revertType(type)].url;
   if (urlClsToRemove) {
     inputUrl.classList.remove(urlClsToRemove);
@@ -96,11 +92,11 @@ const rendeStatus = (elements, value, type) => {
   inputUrl.classList.add(cls[type].url);
 };
 
-const typeStatus = (str) => str.includes('error') ? 'error' : 'success';
+const typeStatus = (str) => (str.includes('error') ? 'error' : 'success');
 
 export default (watchedState, elements, i18nInstance) => (path, value) => {
   const state = watchedState;
-  
+
   if (value === 'sent' || path === 'ui.viewedPostsIds') {
     const toRerend = path === 'ui.viewedPostsIds';
     renderFeeds(state, elements, i18nInstance, toRerend);
@@ -109,12 +105,12 @@ export default (watchedState, elements, i18nInstance) => (path, value) => {
   if (path === 'ui.modal.renderId' && value) {
     renderPostToModal(elements, state, value);
   }
-  
+
   if (path === 'status.error' || path === 'status.success') {
     rendeStatus(elements, value, typeStatus(path));
   }
-  
+
   if (path === 'form.status') {
-    handleProcessState(elements, value)
+    handleProcessState(elements, value);
   }
 };

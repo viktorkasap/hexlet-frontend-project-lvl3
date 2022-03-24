@@ -1,12 +1,12 @@
-import validate from './utils/validate.js';
-import resources from './locales/index.js';
 import uniqWith from 'lodash/uniqWith.js';
 import isEmpty from 'lodash/isEmpty.js';
+import onChange from 'on-change';
+import i18n from 'i18next';
+import validate from './utils/validate.js';
+import resources from './locales/index.js';
 import parse from './utils/parse.js';
 import render from './render.js';
-import onChange from 'on-change';
 import api from './api.js';
-import i18n from 'i18next';
 
 const toFillingStateFeeds = (watchState, newFeed) => {
 	const state = watchState;
@@ -20,7 +20,7 @@ const toFillingStateFeeds = (watchState, newFeed) => {
 		}
 		return false;
 	});
-	
+
 	state.feeds = mergedFeeds;
 	return Promise.resolve();
 };
@@ -32,12 +32,12 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 		.then((response) => response.data.contents)
 		.then((rawContent) => {
 			const rssContent = parse(rawContent);
-			
+
 			if (!rssContent) {
 				state.form.status = 'error';
 				state.status.error = i18nInstance.t('errors.rss');
 			}
-			
+
 			if (rssContent) {
 				const processFillingStateFeeds = toFillingStateFeeds(state, rssContent);
 				processFillingStateFeeds
@@ -46,7 +46,7 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 						if (!isUrlExist) {
 							state.urls = [...state.urls, url];
 						}
-						
+
 						state.update.isUpdate = isUpdate;
 						state.form.status = 'sent';
 						state.status.success = i18nInstance.t('network.success.rss');
@@ -55,7 +55,7 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 		})
 		.catch((err) => {
 			state.form.status = 'error';
-			
+
 			if (err.request) {
 				state.status.error = i18nInstance.t('network.error.request');
 			} else {
@@ -65,26 +65,26 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 };
 
 const updateRss = (state, i18nInstance) => {
-	const {urls} = state;
-	
+	const { urls } = state;
+
 	urls.forEach((url) => getRss(state, i18nInstance, url, 'update'));
-	
+
 	setTimeout(() => updateRss(state, i18nInstance), state.update.interval);
 };
 
 const postsHandler = (e, elements, watchedState) => {
-	const {target: el} = e;
+	const { target: el } = e;
 	const state = watchedState;
-	const {viewedPostsIds} = state.ui;
-	
+	const { viewedPostsIds } = state.ui;
+
 	if (el.dataset.postId) {
-		const {postId: id} = el.dataset;
+		const { postId: id } = el.dataset;
 		const hasViewedId = viewedPostsIds.includes(id);
-		
+
 		if (!hasViewedId) {
 			state.ui.viewedPostsIds = [...viewedPostsIds, id];
 		}
-		
+
 		if (el.tagName === 'BUTTON') {
 			state.ui.modal.renderId = id;
 		}
@@ -93,29 +93,29 @@ const postsHandler = (e, elements, watchedState) => {
 
 const formHandler = (e, elements, watchedState, i18nInstance) => {
 	e.preventDefault();
-	
+
 	const state = watchedState;
-	const {form} = elements;
+	const { form } = elements;
 	const formData = new FormData(form);
-	
+
 	Object.entries(elements.fields).forEach(([name]) => {
 		state.form.fields[name] = formData.get(name).trim();
 	});
-	
+
 	const process = validate(state.form.fields, state.urls, i18nInstance);
 	process
 		.then((validData) => {
 			state.form.valid = isEmpty(validData);
-			
+
 			if (!state.form.valid) {
 				state.status.error = validData;
 			}
-			
+
 			if (state.form.valid) {
-				const {url} = state.form.fields;
+				const { url } = state.form.fields;
 				getRss(state, i18nInstance, url);
 			}
-		})
+		});
 };
 
 export default () => {
@@ -134,7 +134,7 @@ export default () => {
 			link: document.querySelector('.full-article'),
 		},
 	};
-	
+
 	const state = {
 		lng: 'ru',
 		form: {
@@ -161,24 +161,24 @@ export default () => {
 			isUpdate: null,
 		},
 	};
-	
+
 	const i18nInstance = i18n.createInstance();
 	i18nInstance.init({
 		lng: state.lng,
 		debug: true,
 		resources,
 	});
-	
-	const {form: formEl, posts: postsEl} = elements;
+
+	const { form: formEl, posts: postsEl } = elements;
 	const watchedState = onChange(state, render(state, elements, i18nInstance));
-	
+
 	formEl.addEventListener('submit', (e) => {
 		formHandler(e, elements, watchedState, i18nInstance);
 	});
-	
+
 	postsEl.addEventListener('click', (e) => {
 		postsHandler(e, elements, watchedState);
 	});
-	
+
 	setTimeout(() => updateRss(watchedState, i18nInstance), state.update.interval);
 };

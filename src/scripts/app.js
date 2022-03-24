@@ -27,39 +27,40 @@ const toFillingStateFeeds = (watchState, newFeed) => {
 
 const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 	const state = watchedState;
-	state.form.process.status = 'sending';
+	state.form.status = 'sending';
 	api(url)
 		.then((response) => response.data.contents)
-		.then((content) => {
-			const rssContent = parse(content);
+		.then((rawContent) => {
+			const rssContent = parse(rawContent);
 			
 			if (!rssContent) {
-				state.form.process.info = i18nInstance.t('errors.rss');
-				state.form.process.status = 'error';
+				state.form.status = 'error';
+				state.status.error = i18nInstance.t('errors.rss');
 			}
 			
 			if (rssContent) {
-				const processFillFeeds = toFillingStateFeeds(state, rssContent);
-				processFillFeeds
+				const processFillingStateFeeds = toFillingStateFeeds(state, rssContent);
+				processFillingStateFeeds
 					.then(() => {
 						const isUrlExist = state.urls.includes(url);
 						if (!isUrlExist) {
 							state.urls = [...state.urls, url];
 						}
 						
-						state.form.process.status = 'sent';
 						state.update.isUpdate = isUpdate;
-						state.form.process.info = i18nInstance.t('network.success.rss');
+						state.form.status = 'sent';
+						state.status.success = i18nInstance.t('network.success.rss');
 					});
 			}
 		})
 		.catch((err) => {
+			state.form.status = 'error';
+			
 			if (err.request) {
-				state.form.process.info = i18nInstance.t('network.error.request');
+				state.status.error = i18nInstance.t('network.error.request');
 			} else {
-				state.form.process.info = i18nInstance.t('network.error.default');
+				state.status.error = i18nInstance.t('network.error.default');
 			}
-			state.form.process.status = 'error';
 		});
 };
 
@@ -97,29 +98,24 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
 	const {form} = elements;
 	const formData = new FormData(form);
 	
-	// FILL FIELDS VALUES OF STATE
 	Object.entries(elements.fields).forEach(([name]) => {
 		state.form.fields[name] = formData.get(name).trim();
 	});
 	
-	// ERRORS
 	const process = validate(state.form.fields, state.urls, i18nInstance);
 	process
-		.then((data) => {
-			state.form.process.info = data;
-			state.form.valid = isEmpty(data);
-		})
-		.then(() => {
+		.then((validData) => {
+			state.form.valid = isEmpty(validData);
+			
 			if (!state.form.valid) {
-				state.form.process.status = 'error';
+				state.status.error = validData;
 			}
 			
-			// AXIOS GET DATA OF LINK
 			if (state.form.valid) {
 				const {url} = state.form.fields;
 				getRss(state, i18nInstance, url);
 			}
-		});
+		})
 };
 
 export default () => {
@@ -146,10 +142,11 @@ export default () => {
 			fields: {
 				url: null,
 			},
-			process: {
-				info: null,
-				status: null,
-			},
+			stsus: null,
+		},
+		status: {
+			error: null,
+			success: null,
 		},
 		urls: [],
 		feeds: [],

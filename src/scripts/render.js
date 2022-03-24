@@ -7,29 +7,31 @@ const cls = {
     message: 'text-success',
     url: null,
   },
+  success: {
+    message: 'text-success',
+    url: null,
+  },
   error: {
     message: 'text-danger',
     url: 'is-invalid',
   },
 };
 
-const statusType = (type) => (type === 'error' ? 'sent' : 'error');
-
 const handleProcessState = (elements, status) => {
   const { submit } = elements;
   const { url: inputUrl } = elements.fields;
-
+  
   switch (true) {
     case status === 'sending':
       submit.disabled = true;
       inputUrl.readOnly = true;
       break;
-
+    
     case status === 'error' || status === 'sent':
       submit.disabled = false;
       inputUrl.readOnly = false;
       break;
-
+    
     default:
       break;
   }
@@ -76,40 +78,43 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   }
 };
 
-const rendeStatus = (elements, status, info) => {
-  if (!status || !info) return;
-
+const rendeStatus = (elements, value, type) => {
   const { message: messageEL } = elements;
   const { url: inputUrl } = elements.fields;
-  const messageContent = isObject(info) ? info.url.message : info;
-
+  const messageContent = isObject(value) ? value.url.message : value;
+  const revertType = (type) => (type === 'error' ? 'sent' : 'error');
+  
   messageEL.innerHTML = '';
   messageEL.textContent = messageContent;
-  messageEL.classList.remove(cls[statusType(status)].message);
-  messageEL.classList.add(cls[status].message);
-
-  const urlClsToRemove = cls[statusType(status)].url;
+  messageEL.classList.remove(cls[revertType(type)].message);
+  messageEL.classList.add(cls[type].message);
+  
+  const urlClsToRemove = cls[revertType(type)].url;
   if (urlClsToRemove) {
     inputUrl.classList.remove(urlClsToRemove);
   }
-  inputUrl.classList.add(cls[status].url);
+  inputUrl.classList.add(cls[type].url);
 };
+
+const typeStatus = (str) => str.includes('error') ? 'error' : 'success';
 
 export default (watchedState, elements, i18nInstance) => (path, value) => {
   const state = watchedState;
-  const { status, info } = state.form.process;
-  if ((path === 'form.process.status' || path === 'form.process.info') && status !== 'sending') {
-    rendeStatus(elements, status, info);
-  }
+  
   if (value === 'sent' || path === 'ui.viewedPostsIds') {
     const toRerend = path === 'ui.viewedPostsIds';
     renderFeeds(state, elements, i18nInstance, toRerend);
   }
-  if (value === 'error' || value === 'sending' || value === 'sent') {
-    handleProcessState(elements, value);
-  }
+
   if (path === 'ui.modal.renderId' && value) {
     renderPostToModal(elements, state, value);
-    state.ui.modal.renderId = null;
+  }
+  
+  if (path === 'status.error' || path === 'status.success') {
+    rendeStatus(elements, value, typeStatus(path));
+  }
+  
+  if (path === 'form.status') {
+    handleProcessState(elements, value)
   }
 };

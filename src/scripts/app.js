@@ -40,15 +40,17 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 
 			if (rssContent) {
 				const processFillingStateFeeds = toFillingStateFeeds(state, rssContent);
+				
 				processFillingStateFeeds
 					.then(() => {
 						const isUrlExist = state.urls.includes(url);
+						
 						if (!isUrlExist) {
 							state.urls = [...state.urls, url];
 						}
-
-						state.update.isUpdate = isUpdate;
+						
 						state.form.status = 'sent';
+						state.update.isUpdate = isUpdate;
 						state.status.success = i18nInstance.t('network.success.rss');
 					});
 			}

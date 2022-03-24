@@ -35,7 +35,6 @@ const handleProcessState = (elements, status) => {
 
 const renderPostToModal = (elements, watchedState, id) => {
   const state = watchedState;
-
   const { feeds } = state;
   const [feedId, postId] = id.split('-');
   const {
@@ -78,7 +77,12 @@ const rendeStatus = (elements, value, type) => {
   const { message: messageEL } = elements;
   const { url: inputUrl } = elements.fields;
   const messageContent = isObject(value) ? value.url.message : value;
-  const revertType = (str) => (str === 'error' ? 'sent' : 'error');
+  const revertType = (str) => (str === 'error' ? 'success' : 'error');
+  
+  console.log('value', value);
+  console.log('type', type);
+  console.log('revertType(type)', revertType(type))
+  console.log('cls[revertType(type)].message', cls[revertType(type)].message)
 
   messageEL.innerHTML = '';
   messageEL.textContent = messageContent;

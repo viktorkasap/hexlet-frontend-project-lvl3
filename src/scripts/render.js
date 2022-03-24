@@ -74,10 +74,10 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   }
 };
 
-const rendeStatus = (elements, value, type) => {
+const rendeStatus = (elements, i18nInstance, value, type) => {
   const { message: messageEL } = elements;
   const { url: inputUrl } = elements.fields;
-  const messageContent = isObject(value) ? value.url.message : value;
+  const messageContent = isObject(value) ? value.url.message : i18nInstance.t(value);
   const revertType = (str) => (str === 'error' ? 'success' : 'error');
 
   messageEL.innerHTML = '';
@@ -96,18 +96,18 @@ const typeStatus = (str) => (str.includes('error') ? 'error' : 'success');
 
 export default (watchedState, elements, i18nInstance) => (path, value) => {
   const state = watchedState;
-
+  
+  if (path === 'ui.modal.renderId' && value) {
+    renderPostToModal(elements, state, value);
+  }
+  
   if (value === 'sent' || path === 'ui.viewedPostsIds') {
     const toRerend = path === 'ui.viewedPostsIds';
     renderFeeds(state, elements, i18nInstance, toRerend);
   }
-
-  if (path === 'ui.modal.renderId' && value) {
-    renderPostToModal(elements, state, value);
-  }
-
+  
   if (path === 'status.error' || path === 'status.success') {
-    rendeStatus(elements, value, typeStatus(path));
+    rendeStatus(elements, i18nInstance, value, typeStatus(path));
   }
 
   if (path === 'form.status') {

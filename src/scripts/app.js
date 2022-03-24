@@ -39,20 +39,18 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 					state.urls = uniq([...state.urls, url]);
 					state.form.status = 'sent';
 					state.update.isUpdate = isUpdate;
-					state.status.success = i18nInstance.t('network.success.rss');
+					state.status.success = 'network.success.rss';
 				});
 		})
 		.catch((err) => {
 			state.form.status = 'error';
-
+			
 			if (err.request) {
-				state.status.error = i18nInstance.t('network.error.request');
-			} else {
-				state.status.error = i18nInstance.t('network.error.default');
+				state.status.error = 'network.error.request';
 			}
-
+			
 			if (err.type === 'parse') {
-				state.status.error = i18nInstance.t('errors.rss');
+				state.status.error = 'errors.rss';
 			}
 		});
 };
@@ -104,6 +102,7 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
 
 			if (!state.form.valid) {
 				state.status.error = validData;
+				state.form.status = 'error';
 			}
 
 			if (state.form.valid) {

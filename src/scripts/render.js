@@ -1,9 +1,10 @@
 import isObject from 'lodash/isObject.js';
-import templateFeed from '../templates/feeds.js';
-import templatePosts from '../templates/posts.js';
+import templateFeed from './templates/feeds.js';
+import templatePosts from './templates/posts.js';
+import sanitize from './utils/sanitize.js';
 
 const cls = {
-  sent: {
+  success: {
     message: 'text-success',
     url: null,
   },
@@ -12,8 +13,6 @@ const cls = {
     url: 'is-invalid',
   },
 };
-
-const statusType = (type) => (type === 'error' ? 'sent' : 'error');
 
 const handleProcessState = (elements, status) => {
   const { submit } = elements;
@@ -37,7 +36,6 @@ const handleProcessState = (elements, status) => {
 
 const renderPostToModal = (elements, watchedState, id) => {
   const state = watchedState;
-
   const { feeds } = state;
   const [feedId, postId] = id.split('-');
   const {
@@ -48,10 +46,10 @@ const renderPostToModal = (elements, watchedState, id) => {
   const { title: modalTitle, body: modalBody, link: modalLink } = elements.modal;
 
   modalTitle.innerHTML = '';
-  modalTitle.textContent = postTitle;
+  modalTitle.textContent = sanitize(postTitle);
 
   modalBody.innerHTML = '';
-  modalBody.textContent = postDescription;
+  modalBody.textContent = sanitize(postDescription);
 
   modalLink.href = postLink;
 };
@@ -76,40 +74,43 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   }
 };
 
-const rendeStatus = (elements, status, info) => {
-  if (!status || !info) return;
-
+const rendeStatus = (elements, i18nInstance, value, type) => {
   const { message: messageEL } = elements;
   const { url: inputUrl } = elements.fields;
-  const messageContent = isObject(info) ? info.url.message : info;
+  const messageContent = isObject(value) ? value.url.message : i18nInstance.t(value);
+  const revertType = (str) => (str === 'error' ? 'success' : 'error');
 
   messageEL.innerHTML = '';
   messageEL.textContent = messageContent;
-  messageEL.classList.remove(cls[statusType(status)].message);
-  messageEL.classList.add(cls[status].message);
+  messageEL.classList.remove(cls[revertType(type)].message);
+  messageEL.classList.add(cls[type].message);
 
-  const urlClsToRemove = cls[statusType(status)].url;
+  const urlClsToRemove = cls[revertType(type)].url;
   if (urlClsToRemove) {
     inputUrl.classList.remove(urlClsToRemove);
   }
-  inputUrl.classList.add(cls[status].url);
+  inputUrl.classList.add(cls[type].url);
 };
+
+const typeStatus = (str) => (str.includes('error') ? 'error' : 'success');
 
 export default (watchedState, elements, i18nInstance) => (path, value) => {
   const state = watchedState;
-  const { status, info } = state.form.process;
-  if ((path === 'form.process.status' || path === 'form.process.info') && status !== 'sending') {
-    rendeStatus(elements, status, info);
+
+  if (path === 'ui.modal.renderId' && value) {
+    renderPostToModal(elements, state, value);
   }
+
   if (value === 'sent' || path === 'ui.viewedPostsIds') {
     const toRerend = path === 'ui.viewedPostsIds';
     renderFeeds(state, elements, i18nInstance, toRerend);
   }
-  if (value === 'error' || value === 'sending' || value === 'sent') {
-    handleProcessState(elements, value);
+
+  if (path === 'status.error' || path === 'status.success') {
+    rendeStatus(elements, i18nInstance, value, typeStatus(path));
   }
-  if (path === 'ui.modal.renderId' && value) {
-    renderPostToModal(elements, state, value);
-    state.ui.modal.renderId = null;
+
+  if (path === 'form.status') {
+    handleProcessState(elements, value);
   }
 };

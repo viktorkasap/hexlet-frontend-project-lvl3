@@ -27,5 +27,12 @@ export default (content) => {
   const document = parser.parseFromString(content, 'application/xml');
   const hasError = document.querySelector('parsererror');
 
-  return hasError ? false : parseFeeds(document);
+  if (hasError) {
+    const message = hasError.textContent;
+    const error = new Error(message);
+    error.type = 'parse';
+    throw error;
+  }
+
+  return parseFeeds(document);
 };

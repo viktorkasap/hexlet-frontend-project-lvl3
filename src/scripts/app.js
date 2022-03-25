@@ -30,7 +30,7 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 	const state = watchedState;
 	
 	if (isUpdate) {
-		state.form.status = 'sending';
+		state.form.status = 'update';
 	}
 	
 	api(url)
@@ -61,9 +61,11 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 
 const updateRss = (state, i18nInstance) => {
 	const { urls } = state;
-
-	urls.forEach((url) => getRss(state, i18nInstance, url, 'update'));
-
+	
+	if (!isEmpty(urls)) {
+		urls.forEach((url) => getRss(state, i18nInstance, url, 'update'));
+	}
+	
 	setTimeout(() => updateRss(state, i18nInstance), state.update.interval);
 };
 

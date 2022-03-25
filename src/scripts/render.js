@@ -56,8 +56,8 @@ const renderPostToModal = (elements, watchedState, id) => {
 
 const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   const { feeds } = state;
-  const { isUpdate } = state.update;
   const { url } = elements.fields;
+  const { isUpdate } = state.update;
   const { feeds: feedsWrap, posts: postsWrap } = elements;
 
   if (!toRerend && !isUpdate) {

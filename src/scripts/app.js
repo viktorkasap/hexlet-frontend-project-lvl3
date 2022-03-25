@@ -28,7 +28,11 @@ const toFillingStateFeeds = (watchState, newFeed) => {
 
 const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 	const state = watchedState;
-
+	
+	if (isUpdate) {
+		state.form.status = 'sending';
+	}
+	
 	api(url)
 		.then((response) => {
 			const rssContent = parse(response.data.contents);

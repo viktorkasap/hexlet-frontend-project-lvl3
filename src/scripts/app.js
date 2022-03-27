@@ -23,7 +23,6 @@ const toFillingStateFeeds = (watchState, newFeed) => {
   });
 
   state.feeds = mergedFeeds;
-  return Promise.resolve();
 };
 
 const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
@@ -36,15 +35,12 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
   api(url)
     .then((response) => {
       const rssContent = parse(response.data.contents);
-      const processFillingStateFeeds = toFillingStateFeeds(state, rssContent);
 
-      processFillingStateFeeds
-        .then(() => {
-          state.urls = uniq([...state.urls, url]);
-          state.form.status = 'sent';
-          state.update.isUpdate = isUpdate;
-          state.status.success = 'network.success.rss';
-        });
+      toFillingStateFeeds(state, rssContent);
+      state.urls = uniq([...state.urls, url]);
+      state.form.status = 'sent';
+      state.update.isUpdate = isUpdate;
+      state.status.success = 'network.success.rss';
     })
     .catch((err) => {
       state.form.status = 'error';

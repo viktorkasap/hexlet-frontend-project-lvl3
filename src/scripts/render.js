@@ -56,17 +56,14 @@ const renderPostToModal = (elements, watchedState, id) => {
 
 const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   const { feeds } = state;
-  const { url } = elements.fields;
   const { isUpdate } = state.update;
   const { feeds: feedsWrap, posts: postsWrap } = elements;
 
   if (!toRerend && !isUpdate) {
-    feedsWrap.innerHTML = '';
-    feedsWrap.textContent = templateFeed(feeds, i18nInstance);
+    feedsWrap.innerHTML = templateFeed(feeds, i18nInstance);
   }
 
-  postsWrap.innerHTML = '';
-  postsWrap.textContent = templatePosts(state, i18nInstance);
+  postsWrap.innerHTML = templatePosts(state, i18nInstance);
 };
 
 const rendeStatus = (elements, i18nInstance, value, type) => {

@@ -52,20 +52,18 @@ const updateRss = (watchedState, i18nInstance) => {
   const state = watchedState;
   const { urls } = state;
 
-    const promises = urls.map((url) => {
-      api(url)
-        .then((response) => {
-          state.update.isUpdate = 'update';
-          toFillingStateFeeds(state, parse(response.data.contents));
-        });
-    });
+  const promises = urls.map((url) => api(url)
+    .then((response) => {
+      state.update.isUpdate = 'update';
+      toFillingStateFeeds(state, parse(response.data.contents));
+    }));
 
-    Promise.all(promises)
-      .finally(() => {
-        setTimeout(() => {
-          updateRss(state, i18nInstance);
-        }, state.update.interval);
-      });
+  Promise.all(promises)
+    .finally(() => {
+      setTimeout(() => {
+        updateRss(state, i18nInstance);
+      }, state.update.interval);
+    });
 };
 
 const postsHandler = (e, elements, watchedState) => {
@@ -115,7 +113,7 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
       }
 
       const { url } = state.form.fields;
-      const { url: urlEl } = elements.fields
+      const { url: urlEl } = elements.fields;
       getRss(state, i18nInstance, url);
       form.reset();
       urlEl.focus();
@@ -161,7 +159,7 @@ export default () => {
       },
     },
     update: {
-      interval: 10000,
+      interval: 5000,
       isUpdate: null,
     },
   };

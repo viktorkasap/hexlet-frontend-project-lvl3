@@ -60,7 +60,7 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 };
 
 const updateRss = (state, i18nInstance) => {
-  const {urls} = state;
+  const { urls } = state;
   
   if (!isEmpty(urls)) {
     urls.forEach((url) => getRss(state, i18nInstance, url, 'update'));
@@ -70,12 +70,12 @@ const updateRss = (state, i18nInstance) => {
 };
 
 const postsHandler = (e, elements, watchedState) => {
-  const {target: el} = e;
+  const { target: el } = e;
   const state = watchedState;
-  const {viewedPostsIds} = state.ui;
+  const { viewedPostsIds } = state.ui;
   
   if (el.dataset.postId) {
-    const {postId: id} = el.dataset;
+    const { postId: id } = el.dataset;
     const hasViewedId = viewedPostsIds.includes(id);
     
     if (!hasViewedId) {
@@ -92,7 +92,7 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
   e.preventDefault();
   
   const state = watchedState;
-  const {form} = elements;
+  const { form } = elements;
   const formData = new FormData(form);
   
   state.form.status = 'sending';
@@ -112,7 +112,7 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
       }
       
       if (state.form.valid) {
-        const {url} = state.form.fields;
+        const { url } = state.form.fields;
         getRss(state, i18nInstance, url);
       }
     });
@@ -169,7 +169,7 @@ export default () => {
     resources,
   });
   
-  const {form: formEl, posts: postsEl} = elements;
+  const { form: formEl, posts: postsEl } = elements;
   const watchedState = onChange(state, render(state, elements, i18nInstance));
   
   formEl.addEventListener('submit', (e) => {

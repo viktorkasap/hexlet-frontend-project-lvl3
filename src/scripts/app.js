@@ -21,18 +21,18 @@ const toFillingStateFeeds = (watchState, newFeed) => {
     }
     return false;
   });
-  
+
   state.feeds = mergedFeeds;
   return Promise.resolve();
 };
 
 const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
   const state = watchedState;
-  
+
   if (isUpdate) {
     state.form.status = 'update';
   }
-  
+
   api(url)
     .then((response) => {
       const rssContent = parse(response.data.contents);
@@ -61,11 +61,11 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
 
 const updateRss = (state, i18nInstance) => {
   const { urls } = state;
-  
+
   if (!isEmpty(urls)) {
     urls.forEach((url) => getRss(state, i18nInstance, url, 'update'));
   }
-  
+
   setTimeout(() => updateRss(state, i18nInstance), state.update.interval);
 };
 
@@ -77,11 +77,11 @@ const postsHandler = (e, elements, watchedState) => {
   if (el.dataset.postId) {
     const { postId: id } = el.dataset;
     const hasViewedId = viewedPostsIds.includes(id);
-    
+
     if (!hasViewedId) {
       state.ui.viewedPostsIds = [...viewedPostsIds, id];
     }
-    
+
     if (el.tagName === 'BUTTON') {
       state.ui.modal.renderId = id;
     }
@@ -90,17 +90,17 @@ const postsHandler = (e, elements, watchedState) => {
 
 const formHandler = (e, elements, watchedState, i18nInstance) => {
   e.preventDefault();
-  
+
   const state = watchedState;
   const { form } = elements;
   const formData = new FormData(form);
-  
+
   state.form.status = 'sending';
   
   Object.entries(elements.fields).forEach(([name]) => {
     state.form.fields[name] = formData.get(name).trim();
   });
-  
+
   const process = validate(state.form.fields, state.urls, i18nInstance);
   process
     .then((validData) => {
@@ -110,7 +110,7 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
         state.status.error = validData;
         state.form.status = 'error';
       }
-      
+
       if (state.form.valid) {
         const { url } = state.form.fields;
         getRss(state, i18nInstance, url);
@@ -134,7 +134,7 @@ export default () => {
       link: document.querySelector('.full-article'),
     },
   };
-  
+
   const state = {
     lng: 'ru',
     form: {
@@ -161,24 +161,24 @@ export default () => {
       isUpdate: null,
     },
   };
-  
+
   const i18nInstance = i18n.createInstance();
   i18nInstance.init({
     lng: state.lng,
     debug: true,
     resources,
   });
-  
+
   const { form: formEl, posts: postsEl } = elements;
   const watchedState = onChange(state, render(state, elements, i18nInstance));
   
   formEl.addEventListener('submit', (e) => {
     formHandler(e, elements, watchedState, i18nInstance);
   });
-  
+
   postsEl.addEventListener('click', (e) => {
     postsHandler(e, elements, watchedState);
   });
-  
+
   setTimeout(() => updateRss(watchedState, i18nInstance), state.update.interval);
 };

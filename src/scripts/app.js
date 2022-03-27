@@ -25,22 +25,15 @@ const toFillingStateFeeds = (watchState, newFeed) => {
   state.feeds = mergedFeeds;
 };
 
-const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
+const getRss = (watchedState, i18nInstance, url) => {
   const state = watchedState;
-
-  if (isUpdate) {
-    state.form.status = 'update';
-  }
 
   api(url)
     .then((response) => {
-      const rssContent = parse(response.data.contents);
-
-      toFillingStateFeeds(state, rssContent);
+      toFillingStateFeeds(state, parse(response.data.contents));
       state.urls = uniq([...state.urls, url]);
-      state.form.status = 'sent';
-      state.update.isUpdate = isUpdate;
       state.status.success = 'network.success.rss';
+      state.form.status = 'sent';
     })
     .catch((err) => {
       state.form.status = 'error';
@@ -55,19 +48,29 @@ const getRss = (watchedState, i18nInstance, url, isUpdate = null) => {
     });
 };
 
-const updateRss = (state, i18nInstance) => {
+const updateRss = (watchedState, i18nInstance) => {
+  const state = watchedState;
   const { urls } = state;
 
-  if (!isEmpty(urls)) {
-    urls.forEach((url) => getRss(state, i18nInstance, url, 'update'));
-  }
+    const promises = urls.map((url) => {
+      api(url)
+        .then((response) => {
+          state.update.isUpdate = 'update';
+          toFillingStateFeeds(state, parse(response.data.contents));
+        });
+    });
 
-  setTimeout(() => updateRss(state, i18nInstance), state.update.interval);
+    Promise.all(promises)
+      .finally(() => {
+        setTimeout(() => {
+          updateRss(state, i18nInstance);
+        }, state.update.interval);
+      });
 };
 
 const postsHandler = (e, elements, watchedState) => {
-  const { target: el } = e;
   const state = watchedState;
+  const { target: el } = e;
   const { viewedPostsIds } = state.ui;
 
   if (el.dataset.postId) {
@@ -92,6 +95,9 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
   const formData = new FormData(form);
 
   state.form.status = 'sending';
+  state.status.error = null;
+  state.status.success = null;
+  state.update.isUpdate = null;
 
   Object.entries(elements.fields).forEach(([name]) => {
     state.form.fields[name] = formData.get(name).trim();
@@ -105,12 +111,14 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
       if (!state.form.valid) {
         state.status.error = validData;
         state.form.status = 'error';
+        return;
       }
 
-      if (state.form.valid) {
-        const { url } = state.form.fields;
-        getRss(state, i18nInstance, url);
-      }
+      const { url } = state.form.fields;
+      const { url: urlEl } = elements.fields
+      getRss(state, i18nInstance, url);
+      form.reset();
+      urlEl.focus();
     });
 };
 
@@ -153,7 +161,7 @@ export default () => {
       },
     },
     update: {
-      interval: 5000,
+      interval: 10000,
       isUpdate: null,
     },
   };

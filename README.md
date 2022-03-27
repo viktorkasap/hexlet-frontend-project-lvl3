@@ -6,7 +6,7 @@
 
 #### RSS list for example
 - https://ru.hexlet.io/lessons.rss
-- http://rss.dw.de/xml/rss-ru-pol
+- https://rss.dw.de/xml/rss-ru-pol
 - https://rss.dw.com/xml/rss-ru-all
 - http://rss.dw.de/xml/rss-ru-auto
 - https://www.finam.ru/analysis/nslent/rsspoint

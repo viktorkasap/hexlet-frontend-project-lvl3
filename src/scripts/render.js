@@ -62,16 +62,11 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
 
   if (!toRerend && !isUpdate) {
     feedsWrap.innerHTML = '';
-    feedsWrap.insertAdjacentHTML('afterbegin', templateFeed(feeds, i18nInstance));
+    feedsWrap.textContent = templateFeed(feeds, i18nInstance);
   }
 
   postsWrap.innerHTML = '';
-  postsWrap.insertAdjacentHTML('afterbegin', templatePosts(state, i18nInstance));
-
-  if (!isUpdate) {
-    url.value = '';
-    url.focus();
-  }
+  postsWrap.textContent = templatePosts(state, i18nInstance);
 };
 
 const rendeStatus = (elements, i18nInstance, value, type) => {

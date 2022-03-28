@@ -113,7 +113,6 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
       }
 
       const { url } = state.form.fields;
-      const { url: urlEl } = elements.fields;
       getRss(state, i18nInstance, url);
     });
 };

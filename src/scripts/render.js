@@ -65,8 +65,8 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   }
 
   postsWrap.innerHTML = templatePosts(state, i18nInstance);
-  
-  url.value = ''
+
+  url.value = '';
   url.focus();
 };
 
@@ -85,7 +85,7 @@ const rendeStatus = (elements, i18nInstance, value, type) => {
   if (urlClsToRemove) {
     inputUrl.classList.remove(urlClsToRemove);
   }
-  
+
   inputUrl.classList.add(cls[type].url);
 };
 

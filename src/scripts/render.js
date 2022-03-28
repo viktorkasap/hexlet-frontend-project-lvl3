@@ -58,12 +58,16 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   const { feeds } = state;
   const { isUpdate } = state.update;
   const { feeds: feedsWrap, posts: postsWrap } = elements;
+  const { url } = elements.fields;
 
   if (!toRerend && !isUpdate) {
     feedsWrap.innerHTML = templateFeed(feeds, i18nInstance);
   }
 
   postsWrap.innerHTML = templatePosts(state, i18nInstance);
+  
+  url.value = ''
+  url.focus();
 };
 
 const rendeStatus = (elements, i18nInstance, value, type) => {
@@ -81,6 +85,7 @@ const rendeStatus = (elements, i18nInstance, value, type) => {
   if (urlClsToRemove) {
     inputUrl.classList.remove(urlClsToRemove);
   }
+  
   inputUrl.classList.add(cls[type].url);
 };
 

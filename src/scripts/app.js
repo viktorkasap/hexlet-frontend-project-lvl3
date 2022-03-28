@@ -115,8 +115,6 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
       const { url } = state.form.fields;
       const { url: urlEl } = elements.fields;
       getRss(state, i18nInstance, url);
-      form.reset();
-      urlEl.focus();
     });
 };
 
@@ -176,6 +174,7 @@ export default () => {
 
   formEl.addEventListener('submit', (e) => {
     formHandler(e, elements, watchedState, i18nInstance);
+    console.log('watchedState', watchedState);
   });
 
   postsEl.addEventListener('click', (e) => {

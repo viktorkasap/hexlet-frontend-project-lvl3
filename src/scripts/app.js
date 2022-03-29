@@ -33,11 +33,9 @@ const getRss = (watchedState, i18nInstance, url) => {
       toFillingStateFeeds(state, parse(response.data.contents));
       state.urls = uniq([...state.urls, url]);
       state.status.success = 'network.success.rss';
-      state.form.status = 'sent';
+      state.form.status = 'success';
     })
     .catch((err) => {
-      state.form.status = 'error';
-
       if (err.request) {
         state.status.error = 'network.error.request';
       }
@@ -45,6 +43,8 @@ const getRss = (watchedState, i18nInstance, url) => {
       if (err.type === 'parse') {
         state.status.error = 'errors.rss';
       }
+
+      state.form.status = 'error';
     });
 };
 
@@ -92,10 +92,10 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
   const { form } = elements;
   const formData = new FormData(form);
 
-  state.form.status = 'sending';
   state.status.error = null;
   state.status.success = null;
   state.update.isUpdate = null;
+  state.form.status = 'sending';
 
   Object.entries(elements.fields).forEach(([name]) => {
     state.form.fields[name] = formData.get(name).trim();
@@ -141,7 +141,7 @@ export default () => {
       fields: {
         url: null,
       },
-      stsus: null,
+      status: null,
     },
     status: {
       error: null,
@@ -173,7 +173,7 @@ export default () => {
 
   formEl.addEventListener('submit', (e) => {
     formHandler(e, elements, watchedState, i18nInstance);
-    console.log('watchedState', watchedState);
+    // console.log('watchedState', watchedState);
   });
 
   postsEl.addEventListener('click', (e) => {

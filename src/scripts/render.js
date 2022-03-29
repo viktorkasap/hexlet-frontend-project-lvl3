@@ -14,27 +14,7 @@ const cls = {
   },
 };
 
-const handleProcessState = (elements, status) => {
-  const { submit } = elements;
-  const { url: inputUrl } = elements.fields;
-
-  switch (true) {
-    case status === 'sending':
-      submit.disabled = true;
-      inputUrl.readOnly = true;
-      break;
-
-    case status === 'error' || status === 'sent':
-      submit.disabled = false;
-      inputUrl.readOnly = false;
-      break;
-
-    default:
-      break;
-  }
-};
-
-const renderPostToModal = (elements, watchedState, id) => {
+const renderPostToModal = (watchedState, elements, id) => {
   const state = watchedState;
   const { feeds } = state;
   const [feedId, postId] = id.split('-');
@@ -70,7 +50,8 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   url.focus();
 };
 
-const rendeStatus = (elements, i18nInstance, value, type) => {
+const renderFeedback = (state, elements, i18nInstance, type) => {
+  const value = state.status[`${type}`];
   const { message: messageEL } = elements;
   const { url: inputUrl } = elements.fields;
   const messageContent = isObject(value) ? value.url.message : i18nInstance.t(value);
@@ -89,25 +70,40 @@ const rendeStatus = (elements, i18nInstance, value, type) => {
   inputUrl.classList.add(cls[type].url);
 };
 
-const typeStatus = (str) => (str.includes('error') ? 'error' : 'success');
+const handleProcessState = (state, elements, i18nInstance, status) => {
+  const { submit } = elements;
+  const { url: inputUrl } = elements.fields;
+
+  switch (true) {
+    case status === 'sending':
+      submit.disabled = true;
+      inputUrl.readOnly = true;
+      break;
+
+    case status === 'error' || status === 'success':
+      submit.disabled = false;
+      inputUrl.readOnly = false;
+      renderFeedback(state, elements, i18nInstance, status);
+      break;
+
+    default:
+      break;
+  }
+};
 
 export default (watchedState, elements, i18nInstance) => (path, value) => {
   const state = watchedState;
 
   if (path === 'ui.modal.renderId' && value) {
-    renderPostToModal(elements, state, value);
+    renderPostToModal(state, elements, value);
   }
 
-  if (value === 'sent' || path === 'ui.viewedPostsIds') {
+  if (value === 'success' || path === 'ui.viewedPostsIds') {
     const toRerend = path === 'ui.viewedPostsIds';
     renderFeeds(state, elements, i18nInstance, toRerend);
   }
 
-  if (path === 'status.error' || path === 'status.success') {
-    rendeStatus(elements, i18nInstance, value, typeStatus(path));
-  }
-
   if (path === 'form.status') {
-    handleProcessState(elements, value);
+    handleProcessState(state, elements, i18nInstance, value);
   }
 };

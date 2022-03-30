@@ -36,18 +36,16 @@ const renderPostToModal = (watchedState, elements, id) => {
 
 const renderFeeds = (state, elements, i18nInstance, toRerend) => {
   const { feeds } = state;
-  const { isUpdate } = state.update;
   const { feeds: feedsWrap, posts: postsWrap } = elements;
   const { url } = elements.fields;
 
-  if (!toRerend && !isUpdate) {
+  if (!toRerend) {
     feedsWrap.innerHTML = templateFeed(feeds, i18nInstance);
+    url.value = '';
+    url.focus();
   }
 
   postsWrap.innerHTML = templatePosts(state, i18nInstance);
-
-  url.value = '';
-  url.focus();
 };
 
 const renderFeedback = (state, elements, i18nInstance, type) => {
@@ -98,12 +96,12 @@ export default (watchedState, elements, i18nInstance) => (path, value) => {
     renderPostToModal(state, elements, value);
   }
 
-  if (value === 'success' || path === 'ui.viewedPostsIds') {
-    const toRerend = path === 'ui.viewedPostsIds';
+  if (value === 'success' || path === 'ui.viewedPostsIds' || path === 'feeds') {
+    const toRerend = path === 'ui.viewedPostsIds' || path === 'feeds';
     renderFeeds(state, elements, i18nInstance, toRerend);
   }
 
-  if (path === 'form.status') {
+  if (path === 'form.process') {
     handleProcessState(state, elements, i18nInstance, value);
   }
 };

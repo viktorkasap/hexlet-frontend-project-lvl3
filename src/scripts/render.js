@@ -49,9 +49,9 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
 };
 
 const renderFeedback = (state, elements, i18nInstance, type) => {
-  const value = state.status[`${type}`];
   const { message: messageEL } = elements;
   const { url: inputUrl } = elements.fields;
+  const value = state.status.error ?? 'network.success.rss';
   const messageContent = isObject(value) ? value.url.message : i18nInstance.t(value);
   const revertType = (str) => (str === 'error' ? 'success' : 'error');
 
@@ -89,19 +89,17 @@ const handleProcessState = (state, elements, i18nInstance, status) => {
   }
 };
 
-export default (watchedState, elements, i18nInstance) => (path, value) => {
-  const state = watchedState;
-
-  if (path === 'ui.modal.renderId' && value) {
-    renderPostToModal(state, elements, value);
+export default (state, elements, i18nInstance) => (path, value) => {
+  if (path === 'form.process') {
+    handleProcessState(state, elements, i18nInstance, value);
   }
 
   if (value === 'success' || path === 'ui.viewedPostsIds' || path === 'feeds') {
-    const toRerend = path === 'ui.viewedPostsIds' || path === 'feeds';
+    const toRerend = (path === 'ui.viewedPostsIds' || path === 'feeds');
     renderFeeds(state, elements, i18nInstance, toRerend);
   }
 
-  if (path === 'form.process') {
-    handleProcessState(state, elements, i18nInstance, value);
+  if (path === 'ui.modal.renderId' && value) {
+    renderPostToModal(state, elements, value);
   }
 };

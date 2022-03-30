@@ -32,7 +32,6 @@ const getRss = (watchedState, i18nInstance, url) => {
     .then((response) => {
       toFillingStateFeeds(state, parse(response.data.contents));
       state.urls = uniq([...state.urls, url]);
-      state.status.success = 'network.success.rss';
       state.form.process = 'success';
     })
     .catch((err) => {
@@ -48,6 +47,7 @@ const getRss = (watchedState, i18nInstance, url) => {
     });
 };
 
+let count = 0;
 const updateRss = (watchedState, i18nInstance) => {
   const state = watchedState;
   const { urls } = state;
@@ -61,6 +61,7 @@ const updateRss = (watchedState, i18nInstance) => {
     .finally(() => {
       setTimeout(() => {
         updateRss(state, i18nInstance);
+        console.log(count += 1);
       }, state.update.interval);
     });
 };
@@ -92,7 +93,6 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
   const formData = new FormData(form);
 
   state.status.error = null;
-  state.status.success = null;
   state.form.process = 'sending';
 
   Object.entries(elements.fields).forEach(([name]) => {
@@ -143,7 +143,6 @@ export default () => {
     },
     status: {
       error: null,
-      success: null,
     },
     urls: [],
     feeds: [],

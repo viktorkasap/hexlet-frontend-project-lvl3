@@ -33,7 +33,7 @@ const getRss = (watchedState, i18nInstance, url) => {
       toFillingStateFeeds(state, parse(response.data.contents));
       state.urls = uniq([...state.urls, url]);
       state.status.success = 'network.success.rss';
-      state.form.status = 'success';
+      state.form.process = 'success';
     })
     .catch((err) => {
       if (err.request) {
@@ -44,7 +44,7 @@ const getRss = (watchedState, i18nInstance, url) => {
         state.status.error = 'errors.rss';
       }
 
-      state.form.status = 'error';
+      state.form.process = 'error';
     });
 };
 
@@ -54,7 +54,6 @@ const updateRss = (watchedState, i18nInstance) => {
 
   const promises = urls.map((url) => api(url)
     .then((response) => {
-      state.update.isUpdate = 'update';
       toFillingStateFeeds(state, parse(response.data.contents));
     }));
 
@@ -94,8 +93,7 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
 
   state.status.error = null;
   state.status.success = null;
-  state.update.isUpdate = null;
-  state.form.status = 'sending';
+  state.form.process = 'sending';
 
   Object.entries(elements.fields).forEach(([name]) => {
     state.form.fields[name] = formData.get(name).trim();
@@ -108,7 +106,7 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
 
       if (!state.form.valid) {
         state.status.error = validData;
-        state.form.status = 'error';
+        state.form.process = 'error';
         return;
       }
 
@@ -141,7 +139,7 @@ export default () => {
       fields: {
         url: null,
       },
-      status: null,
+      process: null,
     },
     status: {
       error: null,
@@ -157,7 +155,6 @@ export default () => {
     },
     update: {
       interval: 5000,
-      isUpdate: null,
     },
   };
 

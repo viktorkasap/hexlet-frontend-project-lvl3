@@ -102,9 +102,7 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
   const process = validate(state.form.fields, state.urls, i18nInstance);
   process
     .then((validData) => {
-      state.form.valid = isEmpty(validData);
-
-      if (!state.form.valid) {
+      if (!isEmpty(validData)) {
         state.status.error = validData;
         state.form.process = 'error';
         return;
@@ -135,7 +133,6 @@ export default () => {
   const state = {
     lng: 'ru',
     form: {
-      valid: null,
       fields: {
         url: null,
       },

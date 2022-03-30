@@ -61,7 +61,7 @@ const updateRss = (watchedState, i18nInstance) => {
     .finally(() => {
       setTimeout(() => {
         updateRss(state, i18nInstance);
-        console.log(count +=1);
+        console.log(count += 1);
       }, state.update.interval);
     });
 };

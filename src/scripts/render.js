@@ -49,9 +49,9 @@ const renderFeeds = (state, elements, i18nInstance, toRerend) => {
 };
 
 const renderFeedback = (state, elements, i18nInstance, type) => {
-  const value = state.status.error ?? 'network.success.rss';
   const { message: messageEL } = elements;
   const { url: inputUrl } = elements.fields;
+  const value = state.status.error ?? 'network.success.rss';
   const messageContent = isObject(value) ? value.url.message : i18nInstance.t(value);
   const revertType = (str) => (str === 'error' ? 'success' : 'error');
 
@@ -102,8 +102,4 @@ export default (state, elements, i18nInstance) => (path, value) => {
   if (path === 'ui.modal.renderId' && value) {
     renderPostToModal(state, elements, value);
   }
-  
-  console.log('PATH', path);
-  console.log('VALUE', value);
-  console.log('\n-----');
 };

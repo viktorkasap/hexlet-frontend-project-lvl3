@@ -90,12 +90,13 @@ const handleProcessState = (state, elements, i18nInstance, status) => {
 };
 
 export default (state, elements, i18nInstance) => (path, value) => {
+  console.log(state);
   if (path === 'form.process') {
     handleProcessState(state, elements, i18nInstance, value);
   }
 
   if (value === 'success' || path === 'ui.viewedPostsIds' || path === 'feeds') {
-    const toRerend = (path === 'ui.viewedPostsIds' || path === 'feeds');
+    const toRerend = path === 'ui.viewedPostsIds' || path === 'feeds';
     renderFeeds(state, elements, i18nInstance, toRerend);
   }
 

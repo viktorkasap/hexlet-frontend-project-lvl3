@@ -47,23 +47,19 @@ const getRss = (watchedState, i18nInstance, url) => {
     });
 };
 
-let count = 0;
 const updateRss = (watchedState, i18nInstance) => {
   const state = watchedState;
   const { urls } = state;
 
-  const promises = urls.map((url) => api(url)
-    .then((response) => {
-      toFillingStateFeeds(state, parse(response.data.contents));
-    }));
+  const promises = urls.map((url) => api(url).then((response) => {
+    toFillingStateFeeds(state, parse(response.data.contents));
+  }));
 
-  Promise.all(promises)
-    .finally(() => {
-      setTimeout(() => {
-        updateRss(state, i18nInstance);
-        console.log(count += 1);
-      }, state.update.interval);
-    });
+  Promise.all(promises).finally(() => {
+    setTimeout(() => {
+      updateRss(state, i18nInstance);
+    }, state.update.interval);
+  });
 };
 
 const postsHandler = (e, elements, watchedState) => {
@@ -100,19 +96,16 @@ const formHandler = (e, elements, watchedState, i18nInstance) => {
   });
 
   const process = validate(state.form.fields, state.urls, i18nInstance);
-  process
-    .then((validData) => {
-      state.form.valid = isEmpty(validData);
+  process.then((validData) => {
+    if (!isEmpty(validData)) {
+      state.status.error = validData;
+      state.form.process = 'error';
+      return;
+    }
 
-      if (!state.form.valid) {
-        state.status.error = validData;
-        state.form.process = 'error';
-        return;
-      }
-
-      const { url } = state.form.fields;
-      getRss(state, i18nInstance, url);
-    });
+    const { url } = state.form.fields;
+    getRss(state, i18nInstance, url);
+  });
 };
 
 export default () => {
@@ -135,7 +128,6 @@ export default () => {
   const state = {
     lng: 'ru',
     form: {
-      valid: null,
       fields: {
         url: null,
       },
@@ -169,7 +161,6 @@ export default () => {
 
   formEl.addEventListener('submit', (e) => {
     formHandler(e, elements, watchedState, i18nInstance);
-    // console.log('watchedState', watchedState);
   });
 
   postsEl.addEventListener('click', (e) => {

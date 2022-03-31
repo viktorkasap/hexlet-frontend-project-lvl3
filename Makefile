@@ -12,7 +12,7 @@ test:
 	npm test
 
 pretty:
-	npx prettier --write ./src/scss && npx prettier --write ./src/scripts
+	npx prettier --write ./src/scripts
 
 lint:
 	npx eslint --fix ./src/scripts
